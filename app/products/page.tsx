@@ -1,7 +1,7 @@
 import { Suspense } from "react";
-import { getProducts } from "../../lib/firebase/products";
-import ProductGrid from "@/components/product-grid";
-import ProductFilters from "@/components/product-filters";
+import { getProducts } from "../../app/lib/firebase/products";
+import ProductGrid from "../../app/components/product-grid";
+import ProductFilters from "../../app/components/product-filters";
 
 export default function ProductsPage({
   searchParams,
