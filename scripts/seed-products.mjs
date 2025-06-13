@@ -78,7 +78,7 @@ const sampleProducts = [
     category: "Electronics",
     featured: true,
     inventory: 50,
-    imageUrl: "/placeholder.svg?height=400&width=400",
+    imageUrl: "https://i.ibb.co/gMV6gHc9/bluetoothheadphones.jpg",
     createdAt: Timestamp.now(), // Fixed: Use Firestore Timestamp
   },
   {
@@ -100,7 +100,7 @@ const sampleProducts = [
     category: "Electronics",
     featured: true,
     inventory: 25,
-    imageUrl: "/placeholder.svg?height=400&width=400",
+    imageUrl: "https://i.ibb.co/tP1zrDcq/homecamera.jpg",
     createdAt: Timestamp.now(),
   },
   {
@@ -144,7 +144,7 @@ const sampleProducts = [
     category: "Home",
     featured: true,
     inventory: 80,
-    imageUrl: "/placeholder.svg?height=400&width=400",
+    imageUrl: "https://i.ibb.co/mr8k9zk4/steelwaterbottle.jpg",
     createdAt: Timestamp.now(),
   },
   {
@@ -166,7 +166,7 @@ const sampleProducts = [
     category: "Clothing",
     featured: true,
     inventory: 30,
-    imageUrl: "/placeholder.svg?height=400&width=400",
+    imageUrl: "https://i.ibb.co/v48M4rJB/jacket-1.jpg",
     createdAt: Timestamp.now(),
   },
   {
@@ -188,7 +188,7 @@ const sampleProducts = [
     category: "Beauty",
     featured: true,
     inventory: 55,
-    imageUrl: "/placeholder.svg?height=400&width=400",
+    imageUrl: "https://i.ibb.co/6RMHjsnv/vitaminc.jpg",
     createdAt: Timestamp.now(),
   },
   {
