@@ -89,7 +89,7 @@ const sampleProducts = [
     category: "Clothing",
     featured: false,
     inventory: 100,
-    imageUrl: "/placeholder.svg?height=400&width=400",
+    imageUrl: "https://i.ibb.co/nqMXH9Vh/tshirt-1.jpg",
     createdAt: Timestamp.now(),
   },
   {
@@ -111,7 +111,7 @@ const sampleProducts = [
     category: "Home",
     featured: false,
     inventory: 75,
-    imageUrl: "/placeholder.svg?height=400&width=400",
+    imageUrl: "https://i.ibb.co/v41pfBCT/ceramic-cofee.jpg",
     createdAt: Timestamp.now(),
   },
   {
@@ -133,7 +133,7 @@ const sampleProducts = [
     category: "Sports",
     featured: false,
     inventory: 40,
-    imageUrl: "/placeholder.svg?height=400&width=400",
+    imageUrl: "https://i.ibb.co/ccjSXmFm/yogamat2-1.jpg",
     createdAt: Timestamp.now(),
   },
   {
@@ -155,7 +155,7 @@ const sampleProducts = [
     category: "Electronics",
     featured: false,
     inventory: 35,
-    imageUrl: "/placeholder.svg?height=400&width=400",
+    imageUrl: "https://i.ibb.co/hJ3P1Tzk/wirelesscharger.jpg",
     createdAt: Timestamp.now(),
   },
   {
@@ -177,7 +177,7 @@ const sampleProducts = [
     category: "Home",
     featured: false,
     inventory: 45,
-    imageUrl: "/placeholder.svg?height=400&width=400",
+    imageUrl: "https://i.ibb.co/xtcrhfNj/oildifuser-1.jpg",
     createdAt: Timestamp.now(),
   },
   {
@@ -199,7 +199,7 @@ const sampleProducts = [
     category: "Electronics",
     featured: false,
     inventory: 65,
-    imageUrl: "/placeholder.svg?height=400&width=400",
+    imageUrl: "https://i.ibb.co/rR0C50Lk/portablespeaker-1.jpg",
     createdAt: Timestamp.now(),
   },
 ];
