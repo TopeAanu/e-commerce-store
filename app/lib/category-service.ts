@@ -43,6 +43,7 @@ export class CategoryService {
           updatedAt: categoryData.updatedAt?.toDate() || new Date(),
         } as Category);
       }
+      
 
       return categories;
     } catch (error) {

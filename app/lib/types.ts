@@ -63,3 +63,50 @@ export interface Product {
   inStock: boolean;
   // createdAt: Date;
 }
+
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  imageUrl?: string;
+  featured?: boolean;
+  inventory: number;
+  createdAt: string;
+  sizes?: string[];
+  colors?: string[];
+  brand?: string;
+  material?: string;
+  rating?: number;
+  reviewCount?: number;
+}
+
+export interface CartItem extends Product {
+  quantity: number;
+  selectedSize?: string;
+  selectedColor?: string;
+}
+
+export interface User {
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  photoURL: string | null;
+}
+
+export interface Order {
+  id: string;
+  userId: string;
+  items: CartItem[];
+  shippingAddress: {
+    name: string;
+    address: string;
+    city: string;
+    postalCode: string;
+    country: string;
+  };
+  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+  total: number;
+  createdAt: Date;
+}

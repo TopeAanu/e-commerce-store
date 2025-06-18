@@ -39,8 +39,8 @@ export default function Home() {
             <h2 className="text-2xl font-bold tracking-tight">
               Shop by Category
             </h2>
-            <Link
-              href="/categories"
+            <Link 
+              href="/categories" 
               className="text-sm font-medium text-blue-600 hover:text-blue-500"
             >
               View all categories →
@@ -50,10 +50,7 @@ export default function Home() {
             fallback={
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse"
-                  >
+                  <div key={i} className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
                     <div className="h-48 bg-gray-200"></div>
                     <div className="p-4">
                       <div className="h-6 bg-gray-200 rounded mb-2"></div>
@@ -84,8 +81,7 @@ async function CategoriesPreview() {
   if (categories.length === 0) {
     return (
       <p className="text-center py-12 text-muted-foreground">
-        No categories found. Make sure your categories are properly set up in
-        Firestore.
+        No categories found. Make sure your categories are properly set up in Firestore.
       </p>
     );
   }
