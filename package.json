@@ -48,6 +48,7 @@
     "embla-carousel": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "firebase": "^11.9.0",
+    "firebase-admin": "^13.4.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.454.0",
     "mongodb": "^6.8.0",

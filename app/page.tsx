@@ -2,13 +2,10 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import ProductGrid from "../app/components/product-grid";
-import {
-  getFeaturedProducts,
-  getCategories, // Keep your existing function if you want to use it
-} from "../app/lib/firebase/products";
-import { CategoryService } from "../app/lib/category-service"; // New import
+import { getFeaturedProducts } from "../app/lib/firebase/products";
+import { categoryService } from "../app/lib/categoryService";
 import HeroSection from "../app/components/hero-section";
-import CategoryGrid from "../app/components/category-grid"; // New import
+import ShopByCategory from "../components/ShopByCategory";
 
 export default function Home() {
   return (
@@ -32,35 +29,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Categories */}
-      <section className="container px-4 md:px-6">
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold tracking-tight">
-              Shop by Category
-            </h2>
-            <Link 
-              href="/categories" 
-              className="text-sm font-medium text-blue-600 hover:text-blue-500"
-            >
-              View all categories →
-            </Link>
-          </div>
-          <Suspense
-            fallback={
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
-                    <div className="h-48 bg-gray-200"></div>
-                    <div className="p-4">
-                      <div className="h-6 bg-gray-200 rounded mb-2"></div>
-                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            }
-          >
+      {/* Categories Section - Using the categories page logic */}
+      <section className="py-0 bg-gray-50">
+        <div className="container mx-auto px-0">
+          {/* <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <h2 className="text-3xl font-bold text-gray-800">
+                Shop by Category
+              </h2>
+              <Link
+                href="/categories"
+                className="text-sm font-medium text-blue-600 hover:text-blue-500"
+              >
+                View all →
+              </Link>
+            </div>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Browse our wide selection of products organized by category
+            </p>
+          </div> */}
+          <Suspense fallback={<CategoriesLoading />}>
             <CategoriesPreview />
           </Suspense>
         </div>
@@ -74,52 +62,50 @@ async function FeaturedProducts() {
   return <ProductGrid products={products} />;
 }
 
-// New component using the CategoryService
-async function CategoriesPreview() {
-  const categories = await CategoryService.getAllCategories();
+// Loading component from categories page
+const CategoriesLoading = () => (
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {[...Array(4)].map((_, i) => (
+      <div key={i} className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="h-48 bg-gray-300 animate-pulse"></div>
+        <div className="p-4">
+          <div className="h-6 bg-gray-300 rounded w-3/4 mb-2 animate-pulse"></div>
+          <div className="h-4 bg-gray-300 rounded w-full mb-2 animate-pulse"></div>
+          <div className="h-3 bg-gray-300 rounded w-1/2 animate-pulse"></div>
+        </div>
+      </div>
+    ))}
+  </div>
+);
 
-  if (categories.length === 0) {
+// Categories content from categories page - modified for homepage preview
+const CategoriesPreview = async () => {
+  try {
+    const categories = await categoryService.getAllCategories();
+
+    if (categories.length === 0) {
+      return (
+        <p className="text-center py-12 text-muted-foreground">
+          No categories found. Make sure your categories are properly set up in
+          Firestore.
+        </p>
+      );
+    }
+
+    // Show only first 4 categories on homepage
+    const previewCategories = categories.slice(0, 4);
+
+    return <ShopByCategory categories={previewCategories} />;
+  } catch (error) {
     return (
-      <p className="text-center py-12 text-muted-foreground">
-        No categories found. Make sure your categories are properly set up in Firestore.
-      </p>
+      <div className="text-center">
+        <div className="text-red-600 mb-4">
+          <p>Sorry, we couldn't load categories at the moment.</p>
+          <p className="text-sm text-gray-500">
+            Please try refreshing the page.
+          </p>
+        </div>
+      </div>
     );
   }
-
-  // Show only first 4 categories on homepage
-  const previewCategories = categories.slice(0, 4);
-
-  return <CategoryGrid categories={previewCategories} />;
-}
-
-// Alternative: Keep your existing simple categories grid if you prefer
-// Just rename the function above to CategoriesPreviewOld and use this:
-/*
-async function CategoriesGrid() {
-  const categories = await getCategories();
-
-  if (categories.length === 0) {
-    return (
-      <p className="text-center py-12 text-muted-foreground">
-        No categories found. Make sure your products have categories assigned.
-      </p>
-    );
-  }
-
-  return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {categories.map((category) => (
-        <Link
-          key={category}
-          href={`/categories/${category.toLowerCase()}`} // Updated to use new category route
-          className="group relative aspect-square overflow-hidden rounded-lg bg-muted hover:bg-muted/80 transition-colors"
-        >
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="font-medium text-lg capitalize">{category}</span>
-          </div>
-        </Link>
-      ))}
-    </div>
-  );
-}
-*/
+};
