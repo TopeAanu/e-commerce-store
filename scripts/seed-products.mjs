@@ -6,7 +6,8 @@ import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   collection,
-  addDoc,
+  setDoc,
+  doc,
   getDocs,
   deleteDoc,
   Timestamp,
@@ -79,19 +80,19 @@ const sampleProducts = [
     featured: true,
     inventory: 50,
     imageUrl: "https://i.ibb.co/gMV6gHc9/bluetoothheadphones.jpg",
-    createdAt: Timestamp.now(), // Fixed: Use Firestore Timestamp
-  },
-  {
-    name: "Organic Cotton T-Shirt",
-    description:
-      "Comfortable and sustainable organic cotton t-shirt available in multiple colors.",
-    price: 29.99,
-    category: "Clothing",
-    featured: false,
-    inventory: 100,
-    imageUrl: "https://i.ibb.co/nqMXH9Vh/tshirt-1.jpg",
     createdAt: Timestamp.now(),
   },
+  // {
+  //   name: "Organic Cotton T-Shirt",
+  //   description:
+  //     "Comfortable and sustainable organic cotton t-shirt available in multiple colors.",
+  //   price: 29.99,
+  //   category: "Clothing",
+  //   featured: false,
+  //   inventory: 100,
+  //   imageUrl: "https://i.ibb.co/nqMXH9Vh/tshirt-1.jpg",
+  //   createdAt: Timestamp.now(),
+  // },
   {
     name: "Smart Home Security Camera",
     description:
@@ -103,17 +104,17 @@ const sampleProducts = [
     imageUrl: "https://i.ibb.co/tP1zrDcq/homecamera.jpg",
     createdAt: Timestamp.now(),
   },
-  {
-    name: "Ceramic Coffee Mug Set",
-    description:
-      "Set of 4 handcrafted ceramic coffee mugs perfect for your morning routine.",
-    price: 39.99,
-    category: "Home",
-    featured: false,
-    inventory: 75,
-    imageUrl: "https://i.ibb.co/v41pfBCT/ceramic-cofee.jpg",
-    createdAt: Timestamp.now(),
-  },
+  // {
+  //   name: "Ceramic Coffee Mug Set",
+  //   description:
+  //     "Set of 4 handcrafted ceramic coffee mugs perfect for your morning routine.",
+  //   price: 39.99,
+  //   category: "Home",
+  //   featured: false,
+  //   inventory: 75,
+  //   imageUrl: "https://i.ibb.co/v41pfBCT/ceramic-cofee.jpg",
+  //   createdAt: Timestamp.now(),
+  // },
   {
     name: "Natural Face Moisturizer",
     description:
@@ -125,17 +126,17 @@ const sampleProducts = [
     imageUrl: "https://i.ibb.co/KjqZ3yFb/facemoisture-1.jpg",
     createdAt: Timestamp.now(),
   },
-  {
-    name: "Yoga Mat Premium",
-    description:
-      "Non-slip premium yoga mat with extra cushioning for comfortable practice.",
-    price: 79.99,
-    category: "Sports",
-    featured: false,
-    inventory: 40,
-    imageUrl: "https://i.ibb.co/ccjSXmFm/yogamat2-1.jpg",
-    createdAt: Timestamp.now(),
-  },
+  // {
+  //   name: "Yoga Mat Premium",
+  //   description:
+  //     "Non-slip premium yoga mat with extra cushioning for comfortable practice.",
+  //   price: 79.99,
+  //   category: "Sports",
+  //   featured: false,
+  //   inventory: 40,
+  //   imageUrl: "https://i.ibb.co/ccjSXmFm/yogamat2-1.jpg",
+  //   createdAt: Timestamp.now(),
+  // },
   {
     name: "Stainless Steel Water Bottle",
     description:
@@ -147,17 +148,17 @@ const sampleProducts = [
     imageUrl: "https://i.ibb.co/mr8k9zk4/steelwaterbottle.jpg",
     createdAt: Timestamp.now(),
   },
-  {
-    name: "Wireless Phone Charger",
-    description:
-      "Fast wireless charging pad compatible with all Qi-enabled devices.",
-    price: 49.99,
-    category: "Electronics",
-    featured: false,
-    inventory: 35,
-    imageUrl: "https://i.ibb.co/hJ3P1Tzk/wirelesscharger.jpg",
-    createdAt: Timestamp.now(),
-  },
+  // {
+  //   name: "Wireless Phone Charger",
+  //   description:
+  //     "Fast wireless charging pad compatible with all Qi-enabled devices.",
+  //   price: 49.99,
+  //   category: "Electronics",
+  //   featured: false,
+  //   inventory: 35,
+  //   imageUrl: "https://i.ibb.co/hJ3P1Tzk/wirelesscharger.jpg",
+  //   createdAt: Timestamp.now(),
+  // },
   {
     name: "Denim Jacket Classic",
     description:
@@ -169,17 +170,17 @@ const sampleProducts = [
     imageUrl: "https://i.ibb.co/v48M4rJB/jacket-1.jpg",
     createdAt: Timestamp.now(),
   },
-  {
-    name: "Essential Oil Diffuser",
-    description:
-      "Ultrasonic essential oil diffuser with LED lights and timer settings.",
-    price: 59.99,
-    category: "Home",
-    featured: false,
-    inventory: 45,
-    imageUrl: "https://i.ibb.co/xtcrhfNj/oildifuser-1.jpg",
-    createdAt: Timestamp.now(),
-  },
+  // {
+  //   name: "Essential Oil Diffuser",
+  //   description:
+  //     "Ultrasonic essential oil diffuser with LED lights and timer settings.",
+  //   price: 59.99,
+  //   category: "Home",
+  //   featured: false,
+  //   inventory: 45,
+  //   imageUrl: "https://i.ibb.co/xtcrhfNj/oildifuser-1.jpg",
+  //   createdAt: Timestamp.now(),
+  // },
   {
     name: "Vitamin C Serum",
     description:
@@ -191,17 +192,17 @@ const sampleProducts = [
     imageUrl: "https://i.ibb.co/6RMHjsnv/vitaminc.jpg",
     createdAt: Timestamp.now(),
   },
-  {
-    name: "Bluetooth Speaker Portable",
-    description:
-      "Compact waterproof Bluetooth speaker with 12-hour battery life.",
-    price: 69.99,
-    category: "Electronics",
-    featured: false,
-    inventory: 65,
-    imageUrl: "https://i.ibb.co/rR0C50Lk/portablespeaker-1.jpg",
-    createdAt: Timestamp.now(),
-  },
+  // {
+  //   name: "Bluetooth Speaker Portable",
+  //   description:
+  //     "Compact waterproof Bluetooth speaker with 12-hour battery life.",
+  //   price: 69.99,
+  //   category: "Electronics",
+  //   featured: false,
+  //   inventory: 65,
+  //   imageUrl: "https://i.ibb.co/rR0C50Lk/portablespeaker-1.jpg",
+  //   createdAt: Timestamp.now(),
+  // },
 ];
 
 async function clearProducts() {
@@ -223,16 +224,18 @@ async function seedProducts() {
     // Clear existing products first
     await clearProducts();
 
-    // Add new products
+    // Add new products with numbered IDs
     console.log("Adding new products...");
     const addPromises = sampleProducts.map(async (product, index) => {
       try {
-        const docRef = await addDoc(collection(db, "products"), product);
-        console.log(`✓ Added product ${index + 1}: ${product.name}`);
+        const productId = `id${index + 1}`; // Generate numbered ID (id1, id2, etc.)
+        const docRef = doc(db, "products", productId);
+        await setDoc(docRef, product);
+        console.log(`✓ Added product ${productId}: ${product.name}`);
         return docRef;
       } catch (error) {
         console.error(
-          `✗ Failed to add product ${index + 1}: ${product.name}`,
+          `✗ Failed to add product id${index + 1}: ${product.name}`,
           error
         );
         throw error;
@@ -247,7 +250,7 @@ async function seedProducts() {
     console.log("\nProducts added:");
     sampleProducts.forEach((product, index) => {
       console.log(
-        `${index + 1}. ${product.name} - $${product.price} (${
+        `id${index + 1}: ${product.name} - $${product.price} (${
           product.category
         })`
       );

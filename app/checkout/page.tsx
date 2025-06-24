@@ -8,7 +8,6 @@ import * as z from "zod";
 import { useCart } from "../lib/cart-context";
 import { useAuth } from "../lib/auth-context";
 import { createOrder } from "../lib/firebase/orders";
-import { createPaymentIntent } from "../lib/firebase/payments";
 import { Button } from "../../components/ui/button";
 import {
   Form,
@@ -21,6 +20,12 @@ import {
 import { Input } from "../../components/ui/input";
 import { useToast } from "../../components/ui/use-toast";
 import { loadStripe } from "@stripe/stripe-js";
+import {
+  Elements,
+  CardElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -37,16 +42,19 @@ const formSchema = z.object({
     .min(2, { message: "Country must be at least 2 characters" }),
 });
 
+// Load Stripe with environment variable
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
 );
 
-export default function CheckoutPage() {
+function CheckoutForm() {
   const { cart, clearCart } = useCart();
   const { user } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const stripe = useStripe();
+  const elements = useElements();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,6 +74,15 @@ export default function CheckoutPage() {
   );
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!stripe || !elements) {
+      toast({
+        title: "Payment system not ready",
+        description: "Please wait for the payment system to load",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!user) {
       toast({
         title: "Authentication error",
@@ -89,7 +106,7 @@ export default function CheckoutPage() {
     try {
       setIsLoading(true);
 
-      // Create order in Firestore
+      // Create order in Firestore first
       const order = await createOrder({
         userId: user.uid,
         items: cart,
@@ -105,38 +122,74 @@ export default function CheckoutPage() {
         createdAt: new Date(),
       });
 
-      // Create payment intent
-      const { clientSecret } = await createPaymentIntent({
-        amount: subtotal * 100, // Convert to cents
-        orderId: order.id,
+      // Create payment intent via your API
+      const response = await fetch("/api/payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: Math.round(subtotal * 100), // Convert to cents
+          orderId: order.id,
+        }),
       });
 
-      // Load Stripe
-      const stripe = await stripePromise;
-
-      if (!stripe) {
-        throw new Error("Stripe failed to load");
+      if (!response.ok) {
+        throw new Error("Failed to create payment intent");
       }
 
-      // Redirect to Stripe checkout
-      const { error } = await stripe.redirectToCheckout({
+      const { clientSecret } = await response.json();
+
+      // Get card element
+      const cardElement = elements.getElement(CardElement);
+      if (!cardElement) {
+        throw new Error("Card element not found");
+      }
+
+      // Confirm payment with Stripe
+      const { error, paymentIntent } = await stripe.confirmCardPayment(
         clientSecret,
-      });
+        {
+          payment_method: {
+            card: cardElement,
+            billing_details: {
+              name: values.name,
+              email: values.email,
+              address: {
+                line1: values.address,
+                city: values.city,
+                postal_code: values.postalCode,
+                country: values.country,
+              },
+            },
+          },
+        }
+      );
 
       if (error) {
         throw new Error(error.message);
       }
 
-      // Clear cart after successful checkout
-      clearCart();
+      if (paymentIntent?.status === "succeeded") {
+        // Payment successful
+        clearCart();
+        toast({
+          title: "Payment successful!",
+          description: "Your order has been placed successfully.",
+        });
+        router.push(`/orders/${order.id}`);
+      }
     } catch (error) {
       console.error("Checkout error:", error);
       toast({
         title: "Checkout failed",
         description:
-          "There was an error processing your order. Please try again.",
+          error instanceof Error
+            ? error.message
+            : "There was an error processing your order. Please try again.",
         variant: "destructive",
       });
+    } finally {
       setIsLoading(false);
     }
   };
@@ -239,8 +292,38 @@ export default function CheckoutPage() {
                 />
               </div>
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Processing..." : "Complete Order"}
+              {/* Card Element Section */}
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold">Payment Information</h2>
+                <div className="border rounded-md p-4">
+                  <label className="block text-sm font-medium mb-2">
+                    Card Details
+                  </label>
+                  <CardElement
+                    options={{
+                      style: {
+                        base: {
+                          fontSize: "16px",
+                          color: "#424770",
+                          "::placeholder": {
+                            color: "#aab7c4",
+                          },
+                        },
+                        invalid: {
+                          color: "#9e2146",
+                        },
+                      },
+                    }}
+                  />
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isLoading || !stripe || !elements}
+              >
+                {isLoading ? "Processing..." : `Pay $${subtotal.toFixed(2)}`}
               </Button>
             </form>
           </Form>
@@ -266,8 +349,24 @@ export default function CheckoutPage() {
               <span>${subtotal.toFixed(2)}</span>
             </div>
           </div>
+
+          {/* Test Mode Notice */}
+          <div className="mt-4 p-3 bg-yellow-100 rounded-md text-sm">
+            <p className="font-medium text-yellow-800">Test Mode</p>
+            <p className="text-yellow-700">
+              Use test card: 4242 4242 4242 4242
+            </p>
+          </div>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Elements stripe={stripePromise}>
+      <CheckoutForm />
+    </Elements>
   );
 }

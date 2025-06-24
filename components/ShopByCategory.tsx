@@ -54,7 +54,7 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({
           {categories.map((category) => (
             <Link
               key={category.id}
-              href={`/category/${category.slug}`}
+              href={`/categories/${category.slug}`}
               className="group"
             >
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-700/50 overflow-hidden hover:shadow-lg dark:hover:shadow-gray-700/70 transition-shadow duration-300">

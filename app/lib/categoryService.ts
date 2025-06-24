@@ -20,6 +20,10 @@ export interface Category {
   description?: string;
   productCount?: number;
   isActive?: boolean;
+  isFeatured?: boolean;
+  parentId?: string | null;
+  level?: number;
+  children?: string[];
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -49,6 +53,10 @@ class CategoryService {
           description: data.description,
           productCount: data.productCount || 0,
           isActive: data.isActive,
+          isFeatured: data.isFeatured,
+          parentId: data.parentId || null,
+          level: data.level || 0,
+          children: data.children || [],
           createdAt: data.createdAt?.toDate(),
           updatedAt: data.updatedAt?.toDate(),
         });
@@ -95,17 +103,21 @@ class CategoryService {
         return null;
       }
 
-      const doc = querySnapshot.docs[0];
-      const data = doc.data();
+      const docSnapshot = querySnapshot.docs[0];
+      const data = docSnapshot.data();
 
       return {
-        id: doc.id,
+        id: docSnapshot.id,
         name: data.name,
         slug: data.slug,
         image: data.image,
         description: data.description,
         productCount: data.productCount || 0,
         isActive: data.isActive,
+        isFeatured: data.isFeatured,
+        parentId: data.parentId || null,
+        level: data.level || 0,
+        children: data.children || [],
         createdAt: data.createdAt?.toDate(),
         updatedAt: data.updatedAt?.toDate(),
       };
@@ -113,6 +125,146 @@ class CategoryService {
       console.error("Error fetching category by slug:", error);
       throw new Error(
         `Failed to fetch category: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
+    }
+  }
+
+  async getCategoriesByIds(categoryIds: string[]): Promise<Category[]> {
+    try {
+      if (!categoryIds || categoryIds.length === 0) {
+        return [];
+      }
+
+      const categories: Category[] = [];
+
+      // Firebase doesn't support "in" queries with more than 10 items
+      // So we'll batch the requests if needed
+      const batchSize = 10;
+      for (let i = 0; i < categoryIds.length; i += batchSize) {
+        const batch = categoryIds.slice(i, i + batchSize);
+
+        const categoriesRef = collection(db, this.collectionName);
+        const q = query(
+          categoriesRef,
+          where("__name__", "in", batch),
+          where("isActive", "==", true)
+        );
+
+        const querySnapshot = await getDocs(q);
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          categories.push({
+            id: doc.id,
+            name: data.name,
+            slug: data.slug,
+            image: data.image,
+            description: data.description,
+            productCount: data.productCount || 0,
+            isActive: data.isActive,
+            isFeatured: data.isFeatured,
+            parentId: data.parentId || null,
+            level: data.level || 0,
+            children: data.children || [],
+            createdAt: data.createdAt?.toDate(),
+            updatedAt: data.updatedAt?.toDate(),
+          });
+        });
+      }
+
+      return categories;
+    } catch (error) {
+      console.error("Error fetching categories by IDs:", error);
+      throw new Error(
+        `Failed to fetch categories: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
+    }
+  }
+
+  async getMainCategories(): Promise<Category[]> {
+    try {
+      const categoriesRef = collection(db, this.collectionName);
+      const q = query(
+        categoriesRef,
+        where("isActive", "==", true),
+        where("level", "==", 0),
+        orderBy("name", "asc")
+      );
+
+      const querySnapshot = await getDocs(q);
+      const categories: Category[] = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        categories.push({
+          id: doc.id,
+          name: data.name,
+          slug: data.slug,
+          image: data.image,
+          description: data.description,
+          productCount: data.productCount || 0,
+          isActive: data.isActive,
+          isFeatured: data.isFeatured,
+          parentId: data.parentId || null,
+          level: data.level || 0,
+          children: data.children || [],
+          createdAt: data.createdAt?.toDate(),
+          updatedAt: data.updatedAt?.toDate(),
+        });
+      });
+
+      return categories;
+    } catch (error) {
+      console.error("Error fetching main categories:", error);
+      throw new Error(
+        `Failed to fetch main categories: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
+    }
+  }
+
+  async getSubcategories(parentId: string): Promise<Category[]> {
+    try {
+      const categoriesRef = collection(db, this.collectionName);
+      const q = query(
+        categoriesRef,
+        where("isActive", "==", true),
+        where("parentId", "==", parentId),
+        orderBy("name", "asc")
+      );
+
+      const querySnapshot = await getDocs(q);
+      const categories: Category[] = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        categories.push({
+          id: doc.id,
+          name: data.name,
+          slug: data.slug,
+          image: data.image,
+          description: data.description,
+          productCount: data.productCount || 0,
+          isActive: data.isActive,
+          isFeatured: data.isFeatured,
+          parentId: data.parentId || null,
+          level: data.level || 0,
+          children: data.children || [],
+          createdAt: data.createdAt?.toDate(),
+          updatedAt: data.updatedAt?.toDate(),
+        });
+      });
+
+      return categories;
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+      throw new Error(
+        `Failed to fetch subcategories: ${
           error instanceof Error ? error.message : "Unknown error"
         }`
       );
@@ -143,6 +295,10 @@ class CategoryService {
           description: data.description,
           productCount: data.productCount || 0,
           isActive: data.isActive,
+          isFeatured: data.isFeatured,
+          parentId: data.parentId || null,
+          level: data.level || 0,
+          children: data.children || [],
           createdAt: data.createdAt?.toDate(),
           updatedAt: data.updatedAt?.toDate(),
         });
@@ -175,6 +331,10 @@ class CategoryService {
             description: data.description,
             productCount: data.productCount || 0,
             isActive: data.isActive,
+            isFeatured: data.isFeatured,
+            parentId: data.parentId || null,
+            level: data.level || 0,
+            children: data.children || [],
             createdAt: data.createdAt?.toDate(),
             updatedAt: data.updatedAt?.toDate(),
           });

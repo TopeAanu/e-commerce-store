@@ -1,3 +1,4 @@
+// app/lib/firebase/products.ts
 import {
   collection,
   doc,
@@ -130,7 +131,7 @@ export const getRelatedProducts = async (
 ): Promise<Product[]> => {
   try {
     const q = query(
-      collection(db, "products"),
+      collection(db, "clothing"),
       where("category", "==", category),
       where("id", "!=", productId),
       limit(4)
