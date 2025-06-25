@@ -43,7 +43,7 @@ export default function CartPage() {
           Looks like you haven't added anything to your cart yet.
         </p>
         <Button asChild>
-          <Link href="/products">Continue Shopping</Link>
+          <Link href="/">Continue Shopping</Link>
         </Button>
       </div>
     );

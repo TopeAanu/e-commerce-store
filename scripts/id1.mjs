@@ -32,21 +32,53 @@ const db = getFirestore(app);
 
 // Sample clothing items for different products
 const clothingItemsData = {
-  id1: {
-    name: "Premium Cotton Hoodie",
-    description:
-      "Comfortable cotton hoodie with kangaroo pocket and adjustable drawstring hood.",
-    price: 65.99,
-    size: "Medium",
-    color: "Navy Blue",
-    material: "100% Cotton",
-    brand: "ComfortWear",
-    inStock: true,
-    quantity: 15,
-    sku: "CW-HOOD-NVY-M",
-    care_instructions: "Machine wash cold, tumble dry low",
-    imageUrl: "https://i.ibb.co/cotton-hoodie.jpg",
-  },
+  id1: [
+    {
+      name: "Premium Cotton Hoodie",
+      description:
+        "Comfortable cotton hoodie with kangaroo pocket and adjustable drawstring hood.",
+      price: 65.99,
+      size: "Medium",
+      color: "Navy Blue",
+      material: "100% Cotton",
+      brand: "ComfortWear",
+      inStock: true,
+      quantity: 15,
+      sku: "CW-HOOD-NVY-M",
+      care_instructions: "Machine wash cold, tumble dry low",
+      imageUrl: "https://i.ibb.co/KjqZ3yFb/facemoisture-1.jpg",
+    },
+    {
+      name: "Star Cotton Hoodie",
+      description:
+        "Stylish cotton hoodie with star print design and comfortable fit.",
+      price: 69.99,
+      size: "Large",
+      color: "Gray",
+      material: "100% Cotton",
+      brand: "ComfortWear",
+      inStock: true,
+      quantity: 12,
+      sku: "CW-HOOD-STR-L",
+      care_instructions: "Machine wash cold, tumble dry low",
+      imageUrl: "https://i.ibb.co/star-hoodie.jpg",
+    },
+    {
+      name: "Whale Cotton Hoodie",
+      description:
+        "Unique cotton hoodie featuring whale graphic print and cozy interior.",
+      price: 72.99,
+      size: "Small",
+      color: "Ocean Blue",
+      material: "100% Cotton",
+      brand: "ComfortWear",
+      inStock: true,
+      quantity: 8,
+      sku: "CW-HOOD-WHL-S",
+      care_instructions: "Machine wash cold, tumble dry low",
+      imageUrl: "https://i.ibb.co/whale-hoodie.jpg",
+    },
+  ],
   id2: {
     name: "Classic White T-Shirt",
     description: "Soft and breathable cotton t-shirt for everyday wear.",
@@ -126,23 +158,51 @@ async function seedAllClothingItems() {
     );
 
     for (const [productId, clothingData] of Object.entries(clothingItemsData)) {
-      console.log(`\nAdding clothing item to product ${productId}...`);
+      console.log(`\nAdding clothing items to product ${productId}...`);
 
-      // Add timestamps
-      const clothingItem = {
-        ...clothingData,
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now(),
-      };
+      // Check if clothingData is an array (multiple items) or single object
+      if (Array.isArray(clothingData)) {
+        // Handle multiple items for a product
+        for (let i = 0; i < clothingData.length; i++) {
+          const item = clothingData[i];
+          const clothingItem = {
+            ...item,
+            createdAt: Timestamp.now(),
+            updatedAt: Timestamp.now(),
+          };
 
-      // Reference to the clothing subcollection
-      const clothingRef = doc(db, "products", productId, "clothing", "item1");
+          // Reference to the clothing subcollection with different item IDs
+          const clothingRef = doc(
+            db,
+            "products",
+            productId,
+            "clothing",
+            `item${i + 1}`
+          );
 
-      // Add the clothing item
-      await setDoc(clothingRef, clothingItem);
+          await setDoc(clothingRef, clothingItem);
 
-      console.log(`✓ Successfully added: ${clothingData.name} to ${productId}`);
-      console.log(`✓ Path: products/${productId}/clothing/item1`);
+          console.log(
+            `✓ Successfully added: ${item.name} to ${productId}/clothing/item${
+              i + 1
+            }`
+          );
+        }
+      } else {
+        // Handle single item for a product
+        const clothingItem = {
+          ...clothingData,
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now(),
+        };
+
+        const clothingRef = doc(db, "products", productId, "clothing", "item1");
+        await setDoc(clothingRef, clothingItem);
+
+        console.log(
+          `✓ Successfully added: ${clothingData.name} to ${productId}/clothing/item1`
+        );
+      }
     }
 
     console.log("\n🎉 All clothing items seeded successfully!");

@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${inter.className} overflow-x-hidden`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -33,15 +33,15 @@ export default function RootLayout({
         >
           <AuthProvider>
             <CartProvider>
-              <div className="min-h-screen flex flex-col">
-                <Navbar />
+              <Navbar />
+              <div className="min-h-screen flex flex-col max-w-[1000px] mx-auto">
                 <main className="flex-1">{children}</main>
-                <footer className="py-6 border-t">
-                  <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-                    © {new Date().getFullYear()} NextShop. All rights reserved.
-                  </div>
-                </footer>
               </div>
+              <footer className="py-6 border-t">
+                <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+                  © {new Date().getFullYear()} MelStore. All rights reserved.
+                </div>
+              </footer>
               <Toaster />
             </CartProvider>
           </AuthProvider>

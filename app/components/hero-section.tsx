@@ -5,7 +5,7 @@ import { ShoppingBag } from "lucide-react";
 export default function HeroSection() {
   return (
     <section
-      className="relative w-full h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
+      className="relative w-screen h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat -mx-[50vw] left-1/2 right-1/2"
       style={{
         backgroundImage: "url('https://i.ibb.co/W4Sg75Zv/shopping-1.jpg')",
       }}
@@ -27,7 +27,7 @@ export default function HeroSection() {
           </div>
           <div className="space-x-4">
             <Button asChild size="lg">
-              <Link href="/products">
+              <Link href="/">
                 <ShoppingBag className="mr-2 h-5 w-5" />
                 Shop Now
               </Link>
