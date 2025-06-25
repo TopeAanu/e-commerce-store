@@ -4,10 +4,12 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { db } from "../../lib/firebase/config";
+import { AddToCartButton } from "../../components/add-to-cart-button";
+import type { Product } from "../../lib/types";
 
-// Product type definition
-interface Product {
-  id: number;
+// Firestore document structure
+interface FirestoreProduct {
+  id: number | string;
   name: string;
   price: number;
   image: string;
@@ -22,6 +24,26 @@ const ElectronicsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Convert Firestore product to Product type
+  const convertToProduct = (
+    firestoreProduct: FirestoreProduct,
+    docId: string
+  ): Product => {
+    return {
+      id: firestoreProduct.id?.toString() || docId,
+      name: firestoreProduct.name,
+      description: `${firestoreProduct.category} - ${firestoreProduct.subcategory}`, // Create description from category/subcategory
+      price: firestoreProduct.price,
+      category: firestoreProduct.category,
+      imageUrl: firestoreProduct.image,
+      inventory: firestoreProduct.inStock ? 100 : 0, // Default inventory
+      inStock: firestoreProduct.inStock,
+      createdAt: new Date().toISOString(),
+      rating: firestoreProduct.rating,
+      reviewCount: Math.floor(Math.random() * 100) + 1, // Mock review count
+    };
+  };
+
   // Fetch products from Firestore
   useEffect(() => {
     const fetchProducts = async () => {
@@ -34,7 +56,7 @@ const ElectronicsPage = () => {
         // Option with query filters (uncomment if needed)
         // const productsRef = query(
         //   collection(db, "electronics"),
-        //   where("category", "in", ["women", "men", "accessories"]),
+        //   where("category", "in", ["smartphones", "laptops", "accessories"]),
         //   orderBy("name")
         // );
 
@@ -42,17 +64,9 @@ const ElectronicsPage = () => {
         const fetchedProducts: Product[] = [];
 
         querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          fetchedProducts.push({
-            id: data.id || doc.id,
-            name: data.name,
-            price: data.price,
-            image: data.image,
-            category: data.category,
-            subcategory: data.subcategory,
-            rating: data.rating,
-            inStock: data.inStock,
-          });
+          const data = doc.data() as FirestoreProduct;
+          const product = convertToProduct(data, doc.id);
+          fetchedProducts.push(product);
         });
 
         setProducts(fetchedProducts);
@@ -167,7 +181,7 @@ const ElectronicsPage = () => {
             >
               <div className="relative">
                 <img
-                  src={product.image}
+                  src={product.imageUrl || "/placeholder-image.jpg"}
                   alt={product.name}
                   className="w-full h-48 object-cover"
                 />
@@ -184,28 +198,38 @@ const ElectronicsPage = () => {
                 </h3>
 
                 <div className="flex items-center mb-2">
-                  <div className="flex mr-2">{renderStars(product.rating)}</div>
+                  <div className="flex mr-2">
+                    {renderStars(product.rating || 0)}
+                  </div>
                   <span className="text-sm text-gray-500">
-                    ({product.rating})
+                    ({product.rating || 0})
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between">
+                <div className="mb-4">
                   <span className="text-lg font-bold text-purple-600">
                     ${product.price}
                   </span>
-
-                  <button
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                      product.inStock
-                        ? "bg-purple-600 text-white hover:bg-purple-700"
-                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    }`}
-                    disabled={!product.inStock}
-                  >
-                    {product.inStock ? "Add to Cart" : "Unavailable"}
-                  </button>
                 </div>
+
+                {/* Replace the simple button with AddToCartButton component */}
+                {product.inStock ? (
+                  <AddToCartButton product={product} />
+                ) : (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-center py-2">
+                      <span className="text-gray-500 text-sm">
+                        Out of Stock
+                      </span>
+                    </div>
+                    <button
+                      className="w-full px-4 py-2 bg-gray-300 text-gray-500 cursor-not-allowed rounded-md text-sm font-medium"
+                      disabled
+                    >
+                      Unavailable
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ))}

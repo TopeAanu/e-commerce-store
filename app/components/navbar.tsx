@@ -25,7 +25,7 @@ import { useRouter } from "next/navigation";
 export default function Navbar() {
   const pathname = usePathname();
   const { user } = useAuth();
-  const { cart } = useCart();
+  const { cart, clearCart } = useCart();
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -40,6 +40,7 @@ export default function Navbar() {
 
   const handleSignOut = async () => {
     await signOut();
+    clearCart(); // Clear the cart when signing out
     router.push("/");
   };
 
@@ -112,10 +113,10 @@ export default function Navbar() {
           </form>
 
           <Button variant="ghost" size="icon" asChild>
-            <Link href="/cart">
+            <Link href="/cart" className="relative">
               <ShoppingCart className="h-5 w-5" />
               {cartItemsCount > 0 && (
-                <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground">
+                <span className="absolute top-0 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground">
                   {cartItemsCount}
                 </span>
               )}

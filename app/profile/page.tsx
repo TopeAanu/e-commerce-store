@@ -119,7 +119,7 @@ export default function ProfilePage() {
                     You haven't placed any orders yet.
                   </p>
                   <Button asChild>
-                    <a href="/products">Start Shopping</a>
+                    <a href="/">Start Shopping</a>
                   </Button>
                 </CardContent>
               </Card>
