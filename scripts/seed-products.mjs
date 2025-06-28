@@ -170,17 +170,17 @@ const sampleProducts = [
     imageUrl: "https://i.ibb.co/v48M4rJB/jacket-1.jpg",
     createdAt: Timestamp.now(),
   },
-  // {
-  //   name: "Essential Oil Diffuser",
-  //   description:
-  //     "Ultrasonic essential oil diffuser with LED lights and timer settings.",
-  //   price: 59.99,
-  //   category: "Home",
-  //   featured: false,
-  //   inventory: 45,
-  //   imageUrl: "https://i.ibb.co/xtcrhfNj/oildifuser-1.jpg",
-  //   createdAt: Timestamp.now(),
-  // },
+  {
+    name: "Essential Oil Diffuser",
+    description:
+      "Ultrasonic essential oil diffuser with LED lights and timer settings.",
+    price: 59.99,
+    category: "Home",
+    featured: true,
+    inventory: 45,
+    imageUrl: "https://i.ibb.co/xtcrhfNj/oildifuser-1.jpg",
+    createdAt: Timestamp.now(),
+  },
   {
     name: "Vitamin C Serum",
     description:
@@ -192,17 +192,17 @@ const sampleProducts = [
     imageUrl: "https://i.ibb.co/6RMHjsnv/vitaminc.jpg",
     createdAt: Timestamp.now(),
   },
-  // {
-  //   name: "Bluetooth Speaker Portable",
-  //   description:
-  //     "Compact waterproof Bluetooth speaker with 12-hour battery life.",
-  //   price: 69.99,
-  //   category: "Electronics",
-  //   featured: false,
-  //   inventory: 65,
-  //   imageUrl: "https://i.ibb.co/rR0C50Lk/portablespeaker-1.jpg",
-  //   createdAt: Timestamp.now(),
-  // },
+  {
+    name: "Bluetooth Speaker Portable",
+    description:
+      "Compact waterproof Bluetooth speaker with 12-hour battery life.",
+    price: 69.99,
+    category: "Electronics",
+    featured: true,
+    inventory: 65,
+    imageUrl: "https://i.ibb.co/rR0C50Lk/portablespeaker-1.jpg",
+    createdAt: Timestamp.now(),
+  },
 ];
 
 async function clearProducts() {

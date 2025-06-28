@@ -41,11 +41,11 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({
   return (
     <section className={`py-12 bg-gray-50 dark:bg-black ${className}`}>
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
+        <div className="text-left mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4">
             {title}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
             Discover our wide range of products organized by categories
           </p>
         </div>
@@ -57,7 +57,7 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({
               href={`/categories/${category.slug}`}
               className="group"
             >
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-700/50 overflow-hidden hover:shadow-lg dark:hover:shadow-gray-700/70 transition-shadow duration-300">
+              <div className="bg-white dark:bg-black rounded- shadow-md dark:shadow-gray-700/50 overflow-hidden hover:shadow-lg dark:hover:shadow-gray-700/70 transition-shadow duration-300">
                 <div className="relative h-48 overflow-hidden">
                   <Image
                     src={category.image}
@@ -70,7 +70,7 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({
                 </div>
 
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
                     {category.name}
                   </h3>
 
@@ -87,7 +87,7 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({
                     </p>
                   )}
 
-                  <div className="mt-3 flex items-center text-blue-600 dark:text-blue-400 text-sm font-medium">
+                  <div className="mt-3 flex items-center text-green-600 dark:text-green-400 text-sm font-medium">
                     Shop Now
                     <svg
                       className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform"

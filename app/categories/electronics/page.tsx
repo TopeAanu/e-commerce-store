@@ -118,7 +118,7 @@ const ElectronicsPage = () => {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-gray-900 py-8">
+      <div className="min-h-screen bg-white dark:bg-black py-8">
         <div className="container mx-auto px-4">
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
@@ -134,7 +134,7 @@ const ElectronicsPage = () => {
   // Error state
   if (error) {
     return (
-      <div className="min-h-screen bg-white dark:bg-gray-900 py-8">
+      <div className="min-h-screen bg-white dark:bg-black py-8">
         <div className="container mx-auto px-4">
           <div className="flex justify-center items-center h-64">
             <div className="text-center">
@@ -156,7 +156,7 @@ const ElectronicsPage = () => {
   // No products found
   if (products.length === 0) {
     return (
-      <div className="min-h-screen bg-white dark:bg-gray-900 py-8">
+      <div className="min-h-screen bg-white dark:bg-black py-8">
         <div className="container mx-auto px-4">
           <div className="flex justify-center items-center h-64">
             <div className="text-center">
@@ -171,13 +171,13 @@ const ElectronicsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 py-8">
+    <div className="min-h-screen bg-white dark:bg-black py-8">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {products.map((product) => (
             <div
               key={product.id}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
+              className="bg-white dark:bg-black rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
             >
               <div className="relative">
                 <img

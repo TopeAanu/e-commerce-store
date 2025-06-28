@@ -64,3 +64,11 @@ export interface Category {
 export interface CategoryWithProducts extends Category {
   products?: Product[];
 }
+
+export interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image?: string; // Add this line
+}
