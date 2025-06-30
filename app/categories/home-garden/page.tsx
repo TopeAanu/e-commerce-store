@@ -6,6 +6,7 @@ import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { db } from "../../lib/firebase/config";
 import { AddToCartButton } from "../../components/add-to-cart-button";
 import type { Product } from "../../lib/types";
+import Breadcrumbs from "../../components/breadcrumbs";
 
 // Firestore document structure
 interface FirestoreProduct {
@@ -118,13 +119,10 @@ const HomeGardenPage = () => {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-gray-900 py-8">
+      <div className="min-h-screen bg-white dark:bg-black py-20">
         <div className="container mx-auto px-4">
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-            <span className="ml-4 text-gray-600 dark:text-gray-400">
-              Loading products...
-            </span>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
           </div>
         </div>
       </div>
@@ -173,6 +171,13 @@ const HomeGardenPage = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-black py-8">
       <div className="container mx-auto px-4">
+        <Breadcrumbs />
+        {/* Header Section */}
+        <div className="text-left mb-2">
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+            Home & Garden
+          </h2>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {products.map((product) => (
             <div
@@ -197,17 +202,17 @@ const HomeGardenPage = () => {
                   {product.name}
                 </h3>
 
-                <div className="flex items-center mb-2">
+                {/* <div className="flex items-center mb-2">
                   <div className="flex mr-2">
                     {renderStars(product.rating || 0)}
                   </div>
                   <span className="text-sm text-gray-500">
                     ({product.rating || 0})
                   </span>
-                </div>
+                </div> */}
 
                 <div className="mb-4">
-                  <span className="text-lg font-bold text-purple-600">
+                  <span className="text-lg font-bold text-green-600">
                     ${product.price}
                   </span>
                 </div>

@@ -51,13 +51,16 @@ export default function CartPage() {
 
   return (
     <div className="container px-4 py-8 md:py-12">
-      <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
+      <h2 className="text-3xl font-bold mb-8">Happy Shopping!🥳</h2>
 
       <div className="grid md:grid-cols-[1fr_300px] gap-8">
         <div className="space-y-4">
           {cart.map((item) => (
-            <div key={item.id} className="flex gap-4 py-4 border-b">
-              <div className="w-24 h-24 relative rounded-md overflow-hidden flex-shrink-0">
+            <div
+              key={item.id}
+              className="flex flex-col md:flex-row gap-4 py-4 border-b"
+            >
+              <div className="w-full md:w-64 h-64 relative rounded-md overflow-hidden flex-shrink-0">
                 <Image
                   src={item.imageUrl || "/placeholder.svg?height=96&width=96"}
                   alt={item.name}
@@ -66,30 +69,61 @@ export default function CartPage() {
                 />
               </div>
 
-              <div className="flex-1">
-                <h3 className="font-medium">{item.name}</h3>
-                <p className="text-sm text-muted-foreground">
+              {/* Mobile layout - below image */}
+              <div className="md:hidden">
+                <h3 className="font-medium text-center mb-2">{item.name}</h3>
+                <p className="text-sm text-muted-foreground text-center mb-4">
                   ${item.price.toFixed(2)}
                 </p>
+
+                <div className="flex items-center justify-center gap-4">
+                  <Input
+                    type="number"
+                    min="1"
+                    value={item.quantity}
+                    onChange={(e) =>
+                      updateQuantity(item.id, Number.parseInt(e.target.value))
+                    }
+                    className="w-16"
+                  />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => removeFromCart(item.id)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <Input
-                  type="number"
-                  min="1"
-                  value={item.quantity}
-                  onChange={(e) =>
-                    updateQuantity(item.id, Number.parseInt(e.target.value))
-                  }
-                  className="w-16"
-                />
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => removeFromCart(item.id)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+              {/* Desktop layout - beside image */}
+              <div className="hidden md:flex md:flex-1 md:flex-col md:justify-between">
+                <h3 className="font-medium">{item.name}</h3>
+
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-muted-foreground">
+                    ${item.price.toFixed(2)}
+                  </p>
+
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="number"
+                      min="1"
+                      value={item.quantity}
+                      onChange={(e) =>
+                        updateQuantity(item.id, Number.parseInt(e.target.value))
+                      }
+                      className="w-16"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => removeFromCart(item.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
