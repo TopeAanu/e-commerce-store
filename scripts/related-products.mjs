@@ -1,4 +1,4 @@
-// seed-all-clothing.js - Run this to add clothing items to id1 through id6
+// File: scripts/relatedProducts.mjs
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -30,8 +30,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Sample clothing items for different products
-const clothingItemsData = {
+// Sample related products items for different products
+const relatedProductItemsData = {
   id1: [
     {
       name: "Premium Cotton Hoodie",
@@ -61,7 +61,7 @@ const clothingItemsData = {
       quantity: 12,
       sku: "CW-HOOD-STR-L",
       care_instructions: "Machine wash cold, tumble dry low",
-      imageUrl: "https://i.ibb.co/star-hoodie.jpg",
+      imageUrl: "https://i.ibb.co/Vrb4CDX/cottonhoodie.jpg",
     },
     {
       name: "Whale Cotton Hoodie",
@@ -151,66 +151,76 @@ const clothingItemsData = {
   },
 };
 
-async function seedAllClothingItems() {
+async function seedAllRelatedProductItems() {
   try {
     console.log(
-      "Starting to seed clothing items for products id1 through id6..."
+      "Starting to seed related product items for products id1 through id6..."
     );
 
-    for (const [productId, clothingData] of Object.entries(clothingItemsData)) {
-      console.log(`\nAdding clothing items to product ${productId}...`);
+    for (const [productId, relatedProductData] of Object.entries(
+      relatedProductItemsData
+    )) {
+      console.log(`\nAdding related product items to product ${productId}...`);
 
-      // Check if clothingData is an array (multiple items) or single object
-      if (Array.isArray(clothingData)) {
+      // Check if relatedProductData is an array (multiple items) or single object
+      if (Array.isArray(relatedProductData)) {
         // Handle multiple items for a product
-        for (let i = 0; i < clothingData.length; i++) {
-          const item = clothingData[i];
-          const clothingItem = {
+        for (let i = 0; i < relatedProductData.length; i++) {
+          const item = relatedProductData[i];
+          const relatedProductItem = {
             ...item,
             createdAt: Timestamp.now(),
             updatedAt: Timestamp.now(),
           };
 
-          // Reference to the clothing subcollection with different item IDs
-          const clothingRef = doc(
+          // Reference to the related-product subcollection with different item IDs
+          const relatedProductRef = doc(
             db,
             "products",
             productId,
-            "clothing",
+            "related-products",
             `item${i + 1}`
           );
 
-          await setDoc(clothingRef, clothingItem);
+          await setDoc(relatedProductRef, relatedProductItem);
 
           console.log(
-            `✓ Successfully added: ${item.name} to ${productId}/clothing/item${
-              i + 1
-            }`
+            `✓ Successfully added: ${
+              item.name
+            } to ${productId}/related-products/item${i + 1}`
           );
         }
       } else {
         // Handle single item for a product
-        const clothingItem = {
-          ...clothingData,
+        const relatedProductItem = {
+          ...relatedProductData,
           createdAt: Timestamp.now(),
           updatedAt: Timestamp.now(),
         };
 
-        const clothingRef = doc(db, "products", productId, "clothing", "item1");
-        await setDoc(clothingRef, clothingItem);
+        const relatedProductRef = doc(
+          db,
+          "products",
+          productId,
+          "related-products",
+          "item1"
+        );
+        await setDoc(relatedProductRef, relatedProductItem);
 
         console.log(
-          `✓ Successfully added: ${clothingData.name} to ${productId}/clothing/item1`
+          `✓ Successfully added: ${relatedProductData.name} to ${productId}/related-products/item1`
         );
       }
     }
 
-    console.log("\n🎉 All clothing items seeded successfully!");
-    console.log("✓ Products id1 through id6 now have clothing subcollections");
+    console.log("\n🎉 All related product items seeded successfully!");
+    console.log(
+      "✓ Products id1 through id6 now have related-products subcollections"
+    );
   } catch (error) {
-    console.error("❌ Error seeding clothing items:", error);
+    console.error("❌ Error seeding related products items:", error);
   }
 }
 
 // Run the seeding function
-seedAllClothingItems();
+seedAllRelatedProductItems();

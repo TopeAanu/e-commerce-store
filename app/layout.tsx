@@ -7,6 +7,7 @@ import Navbar from "../app/components/navbar";
 import { Toaster } from "../components/ui/toaster";
 import { CartProvider } from "../app/lib/cart-context";
 import { AuthProvider } from "../app/lib/auth-context";
+import Footer from "./components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,11 +38,7 @@ export default function RootLayout({
               <div className="min-h-screen flex flex-col max-w-[1000px] mx-auto">
                 <main className="flex-1">{children}</main>
               </div>
-              <footer className="py-6 border-t">
-                <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-                  © {new Date().getFullYear()} MelStore. All rights reserved.
-                </div>
-              </footer>
+              <Footer />
               <Toaster />
             </CartProvider>
           </AuthProvider>

@@ -5,9 +5,10 @@ import {
   getProductById,
   getRelatedProducts,
 } from "../../../app/lib/firebase/products";
-import { getClothingItems } from "../../../app/lib/firebase/clothing-manager";
+import { getRelatedProductItems } from "../../../app/lib/firebase/related-products-manager";
 import { AddToCartButton } from "../../components/add-to-cart-button";
 import ProductGrid from "../../components/product-grid";
+import { RelatedProductCard } from "../../components/related-products-card";
 
 // Fix 1: Make params async and properly type it
 interface PageProps {
@@ -19,7 +20,7 @@ export default async function ProductPage({ params }: PageProps) {
   const { id } = await params;
 
   return (
-    <div className="container px-4 py-8 md:py-12">
+    <div className="container px-4 py-6 md:py-8">
       <Suspense
         fallback={<p className="text-center py-12">Loading product...</p>}
       >
@@ -40,8 +41,8 @@ function sanitizeProduct(product: any) {
   };
 }
 
-// Helper function to sanitize clothing items
-function sanitizeClothingItem(item: any) {
+// Helper function to sanitize related product items
+function sanitizeRelatedProductItem(item: any) {
   return {
     ...item,
     // Convert Firestore timestamps to ISO strings
@@ -61,8 +62,8 @@ async function ProductDetails({ id }: { id: string }) {
   const sanitizedProduct = sanitizeProduct(product);
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="grid md:grid-cols-2 gap-8">
+    <div className="flex flex-col gap-6">
+      <div className="grid md:grid-cols-2 gap-6">
         <div className="aspect-square relative overflow-hidden rounded-lg bg-muted">
           <Image
             src={product.imageUrl || "/placeholder.svg?height=600&width=600"}
@@ -72,38 +73,32 @@ async function ProductDetails({ id }: { id: string }) {
             sizes="(max-width: 768px) 100vw, 50vw"
             priority
           />
+          {/* Price overlay in bottom right */}
+          <div className="absolute bottom-3 right-3 bg-green-600 text-white px-3 py-2 rounded text-lg font-semibold">
+            ${product.price.toFixed(2)}
+          </div>
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3">
           <div>
             <h1 className="text-3xl font-bold">{product.name}</h1>
-            <p className="text-xl font-semibold mt-2">
-              ${product.price.toFixed(2)}
-            </p>
           </div>
 
           <div className="prose max-w-none">
-            <p>{product.description}</p>
+            <p className="text-muted-foreground">{product.description}</p>
           </div>
 
-          <div className="mt-6">
+          <div className="mt-4">
             {/* Pass sanitized product to client component */}
             <AddToCartButton product={sanitizedProduct} />
           </div>
         </div>
       </div>
 
-      <div className="mt-12">
-        <h2 className="text-2xl font-bold mb-6">Related Products</h2>
-        <Suspense fallback={<p>Loading related products...</p>}>
-          <RelatedProducts productId={id} category={product.category} />
-        </Suspense>
-      </div>
-
-      <div className="mt-12">
-        <h2 className="text-2xl font-bold mb-6">Clothing Items</h2>
-        <Suspense fallback={<p>Loading clothing items...</p>}>
-          <ClothingItems productId={id} />
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">Related Products</h2>
+        <Suspense fallback={<p>Loading related product items...</p>}>
+          <RelatedProductItems productId={id} />
         </Suspense>
       </div>
     </div>
@@ -130,7 +125,7 @@ async function RelatedProducts({
     // If the error is about missing Firestore index, show a helpful message
     if (error instanceof Error && error.message.includes("requires an index")) {
       return (
-        <div className="text-center py-8">
+        <div className="text-center py-6">
           <p className="text-muted-foreground">
             Related products are being set up. Please check back soon.
           </p>
@@ -140,7 +135,7 @@ async function RelatedProducts({
 
     // For other errors, show generic message
     return (
-      <div className="text-center py-8">
+      <div className="text-center py-6">
         <p className="text-muted-foreground">
           Unable to load related products at the moment.
         </p>
@@ -149,78 +144,38 @@ async function RelatedProducts({
   }
 }
 
-async function ClothingItems({ productId }: { productId: string }) {
+async function RelatedProductItems({ productId }: { productId: string }) {
   try {
-    const clothingItems = await getClothingItems(productId);
+    const relatedProductItems = await getRelatedProductItems(productId);
 
-    if (clothingItems.length === 0) {
+    if (relatedProductItems.length === 0) {
       return (
-        <div className="text-center py-8">
+        <div className="text-center py-6">
           <p className="text-muted-foreground">
-            No clothing items available for this product.
+            No related product items available for this product.
           </p>
         </div>
       );
     }
 
-    // Sanitize clothing items before rendering
-    const sanitizedClothingItems = clothingItems.map(sanitizeClothingItem);
+    // Sanitize related product items before rendering
+    const sanitizedRelatedProductItems = relatedProductItems.map(
+      sanitizeRelatedProductItem
+    );
 
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sanitizedClothingItems.map((item) => (
-          <div key={item.id} className="border rounded-lg p-4 shadow-sm">
-            {item.imageUrl && (
-              <div className="aspect-square relative mb-4 overflow-hidden rounded-lg bg-muted">
-                <Image
-                  src={item.imageUrl}
-                  alt={item.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-              </div>
-            )}
-
-            <div className="space-y-2">
-              <h3 className="font-semibold text-lg">{item.name}</h3>
-              <p className="text-sm text-muted-foreground">
-                {item.description}
-              </p>
-
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-bold">
-                  ${item.price.toFixed(2)}
-                </span>
-                {item.inStock && (
-                  <span className="text-sm text-green-600">In Stock</span>
-                )}
-              </div>
-
-              <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
-                {item.size && <span>Size: {item.size}</span>}
-                {item.color && <span>Color: {item.color}</span>}
-                {item.material && <span>Material: {item.material}</span>}
-              </div>
-
-              {item.brand && (
-                <p className="text-sm font-medium">Brand: {item.brand}</p>
-              )}
-
-              {item.sku && (
-                <p className="text-xs text-muted-foreground">SKU: {item.sku}</p>
-              )}
-            </div>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {sanitizedRelatedProductItems.map((item) => (
+          <RelatedProductCard key={item.id} item={item} />
         ))}
       </div>
     );
   } catch (error) {
-    console.error("Error getting clothing items:", error);
+    console.error("Error getting related product items:", error);
     return (
-      <div className="text-center py-8">
+      <div className="text-center py-6">
         <p className="text-muted-foreground">
-          Unable to load clothing items at the moment.
+          Unable to load related product items at the moment.
         </p>
       </div>
     );

@@ -1,4 +1,5 @@
 "use client";
+// app/cart/page.tsx
 
 import { useCart } from "../lib/cart-context";
 import { useAuth } from "../lib/auth-context";

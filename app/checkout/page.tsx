@@ -294,9 +294,11 @@ function CheckoutForm() {
 
               {/* Card Element Section */}
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold">Payment Information</h2>
-                <div className="border rounded-md p-4">
-                  <label className="block text-sm font-medium mb-2">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Payment Information
+                </h2>
+                <div className="border border-gray-300 dark:border-gray-600 rounded-md p-4 bg-white dark:bg-black">
+                  <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-200">
                     Card Details
                   </label>
                   <CardElement
@@ -304,13 +306,14 @@ function CheckoutForm() {
                       style: {
                         base: {
                           fontSize: "16px",
-                          color: "#424770",
+                          color: "#ffffff", // White text for dark mode
+                          backgroundColor: "transparent",
                           "::placeholder": {
-                            color: "#aab7c4",
+                            color: "#9ca3af", // Light gray placeholder for dark mode
                           },
                         },
                         invalid: {
-                          color: "#9e2146",
+                          color: "#f87171", // Light red for errors in dark mode
                         },
                       },
                     }}
@@ -351,12 +354,12 @@ function CheckoutForm() {
           </div>
 
           {/* Test Mode Notice */}
-          <div className="mt-4 p-3 bg-yellow-100 rounded-md text-sm">
+          {/* <div className="mt-4 p-3 bg-yellow-100 rounded-md text-sm">
             <p className="font-medium text-yellow-800">Test Mode</p>
             <p className="text-yellow-700">
               Use test card: 4242 4242 4242 4242
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
