@@ -167,3 +167,41 @@ export const getCategories = async (): Promise<string[]> => {
     return [];
   }
 };
+
+// // Add these functions if they don't exist
+// export async function getAllProducts() {
+//   try {
+//     const productsRef = collection(db, "products");
+//     const snapshot = await getDocs(productsRef);
+
+//     return snapshot.docs.map((doc) => ({
+//       id: doc.id,
+//       ...doc.data(),
+//     }));
+//   } catch (error) {
+//     console.error("Error getting all products:", error);
+//     throw error;
+//   }
+// }
+
+// export async function searchProducts(searchTerm: string) {
+//   try {
+//     const productsRef = collection(db, "products");
+//     // Simple search - you might want to implement better search logic
+//     const q = query(
+//       productsRef,
+//       where("name", ">=", searchTerm),
+//       where("name", "<=", searchTerm + "\uf8ff")
+//     );
+
+//     const snapshot = await getDocs(q);
+
+//     return snapshot.docs.map((doc) => ({
+//       id: doc.id,
+//       ...doc.data(),
+//     }));
+//   } catch (error) {
+//     console.error("Error searching products:", error);
+//     throw error;
+//   }
+// }

@@ -99,7 +99,7 @@ function CheckoutForm() {
         description: "Your cart is empty",
         variant: "destructive",
       });
-      router.push("/products");
+      router.push("/");
       return;
     }
 
@@ -306,14 +306,22 @@ function CheckoutForm() {
                       style: {
                         base: {
                           fontSize: "16px",
-                          color: "#ffffff", // White text for dark mode
+                          color: document.documentElement.classList.contains(
+                            "dark"
+                          )
+                            ? "#ffffff"
+                            : "#374151", // Dark gray for light mode, white for dark mode
                           backgroundColor: "transparent",
                           "::placeholder": {
-                            color: "#9ca3af", // Light gray placeholder for dark mode
+                            color: document.documentElement.classList.contains(
+                              "dark"
+                            )
+                              ? "#9ca3af"
+                              : "#6b7280", // Adjust placeholder color for both modes
                           },
                         },
                         invalid: {
-                          color: "#f87171", // Light red for errors in dark mode
+                          color: "#f87171", // Red for errors works in both modes
                         },
                       },
                     }}
