@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,8 +53,30 @@ function CheckoutForm() {
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
+
+  // Check for dark mode on client side only
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const checkDarkMode = () => {
+        setIsDarkMode(document.documentElement.classList.contains("dark"));
+      };
+
+      // Check initially
+      checkDarkMode();
+
+      // Optional: Listen for theme changes
+      const observer = new MutationObserver(checkDarkMode);
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+
+      return () => observer.disconnect();
+    }
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -306,22 +328,14 @@ function CheckoutForm() {
                       style: {
                         base: {
                           fontSize: "16px",
-                          color: document.documentElement.classList.contains(
-                            "dark"
-                          )
-                            ? "#ffffff"
-                            : "#374151", // Dark gray for light mode, white for dark mode
+                          color: isDarkMode ? "#ffffff" : "#374151",
                           backgroundColor: "transparent",
                           "::placeholder": {
-                            color: document.documentElement.classList.contains(
-                              "dark"
-                            )
-                              ? "#9ca3af"
-                              : "#6b7280", // Adjust placeholder color for both modes
+                            color: isDarkMode ? "#9ca3af" : "#6b7280",
                           },
                         },
                         invalid: {
-                          color: "#f87171", // Red for errors works in both modes
+                          color: "#f87171",
                         },
                       },
                     }}
