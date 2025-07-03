@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState, useMemo } from "react";
+import { useCallback, useEffect, useState, useMemo, Suspense } from "react";
 import { Button } from "../../components/ui/button";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Label } from "../../components/ui/label";
@@ -16,7 +16,8 @@ import {
 } from "../../components/ui/accordion";
 import { getCategories } from "../../app/lib/firebase/products";
 
-export default function ProductFilters() {
+// Separate the component that uses useSearchParams
+function ProductFiltersContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [categories, setCategories] = useState<string[]>([]);
@@ -168,7 +169,7 @@ export default function ProductFilters() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 overflow-hidden">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">Filters</h2>
         <Button variant="ghost" size="sm" onClick={clearFilters}>
@@ -206,7 +207,7 @@ export default function ProductFilters() {
             Categories {searchQuery && `(${filteredCategories.length} found)`}
           </AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-2 max-h-64 overflow-y-auto">
+            <div className="space-y-2 max-h-64 overflow-y-auto overflow-x-hidden">
               {filteredCategories.length > 0 ? (
                 filteredCategories.map((category) => (
                   <div key={category} className="flex items-center space-x-2">
@@ -239,7 +240,7 @@ export default function ProductFilters() {
                   <span>Min: ${priceRange[0]}</span>
                   <span>Max: ${priceRange[1]}</span>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 items-center">
                   <Input
                     type="number"
                     placeholder="Min"
@@ -248,9 +249,9 @@ export default function ProductFilters() {
                       const newMin = Math.max(0, Number(e.target.value) || 0);
                       setPriceRange([newMin, priceRange[1]]);
                     }}
-                    className="w-20"
+                    className="flex-1 min-w-0"
                   />
-                  <span className="self-center">-</span>
+                  <span className="text-sm text-gray-500 px-1">-</span>
                   <Input
                     type="number"
                     placeholder="Max"
@@ -262,7 +263,7 @@ export default function ProductFilters() {
                       );
                       setPriceRange([priceRange[0], newMax]);
                     }}
-                    className="w-20"
+                    className="flex-1 min-w-0"
                   />
                 </div>
               </div>
@@ -274,5 +275,31 @@ export default function ProductFilters() {
         </AccordionItem>
       </Accordion>
     </div>
+  );
+}
+
+// Loading component for the suspense fallback
+function ProductFiltersLoading() {
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="h-6 w-16 bg-gray-200 rounded animate-pulse" />
+        <div className="h-8 w-20 bg-gray-200 rounded animate-pulse" />
+      </div>
+      <div className="h-10 w-full bg-gray-200 rounded animate-pulse" />
+      <div className="space-y-4">
+        <div className="h-12 w-full bg-gray-200 rounded animate-pulse" />
+        <div className="h-12 w-full bg-gray-200 rounded animate-pulse" />
+      </div>
+    </div>
+  );
+}
+
+// Main component wrapped in Suspense
+export default function ProductFilters() {
+  return (
+    <Suspense fallback={<ProductFiltersLoading />}>
+      <ProductFiltersContent />
+    </Suspense>
   );
 }
