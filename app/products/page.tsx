@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import ProductFilters from "../../app/components/product-filters"; // Adjust import path
 import { productService, Product } from "../lib/product-service"; // Adjust import path
 
-export default function ProductsPage() {
+function ProductsContent() {
   const searchParams = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -193,5 +193,31 @@ export default function ProductsPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Loading component for Suspense fallback
+function ProductsLoading() {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex">
+        <div className="w-1/4 pr-8">
+          <div className="bg-gray-200 animate-pulse h-64 rounded"></div>
+        </div>
+        <div className="w-3/4">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-lg">Loading products...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<ProductsLoading />}>
+      <ProductsContent />
+    </Suspense>
   );
 }
