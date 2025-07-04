@@ -1,8 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { getNames, getCode } from "country-list";
+// import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useCart } from "../lib/cart-context";
@@ -302,15 +311,39 @@ function CheckoutForm() {
                 <FormField
                   control={form.control}
                   name="country"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Country</FormLabel>
-                      <FormControl>
-                        <Input placeholder="United States" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  render={({ field }) => {
+                    const countryNames = useMemo(() => getNames(), []);
+
+                    return (
+                      <FormItem>
+                        <FormLabel>Country</FormLabel>
+                        <FormControl>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value || ""} // Handle undefined
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a country" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {countryNames.map((countryName: string) => {
+                                const countryCode = getCode(countryName);
+                                return (
+                                  <SelectItem
+                                    key={countryCode}
+                                    value={countryCode || ""}
+                                  >
+                                    {countryName}
+                                  </SelectItem>
+                                );
+                              })}
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
               </div>
 
