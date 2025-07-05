@@ -24,7 +24,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} overflow-x-hidden`}>
+      {/* <body className={`${inter.className} overflow-x-hidden`}> */}
+      <body
+        className={`${inter.className} overflow-x-hidden`}
+        style={{ maxWidth: "100vw", overflowX: "hidden" }}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

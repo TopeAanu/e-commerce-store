@@ -96,8 +96,17 @@ async function ProductDetails({ id }: { id: string }) {
         </div>
       </div>
 
+      {/* Related Products Section */}
       <div className="mt-8">
         <h2 className="text-2xl font-bold mb-4">Related Products</h2>
+        <Suspense fallback={<p>Loading related products...</p>}>
+          <RelatedProducts productId={id} category={product.category} />
+        </Suspense>
+      </div>
+
+      {/* Related Product Items Section */}
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">Related Product Items</h2>
         <Suspense fallback={<p>Loading related product items...</p>}>
           <RelatedProductItems productId={id} />
         </Suspense>
@@ -119,7 +128,8 @@ async function RelatedProducts({
     // Fix 2: Sanitize products array before passing to client component
     const sanitizedProducts = products.map(sanitizeProduct);
 
-    return <ProductGrid products={sanitizedProducts} />;
+    // Use carousel layout for related products
+    return <ProductGrid products={sanitizedProducts} layout="carousel" />;
   } catch (error) {
     console.error("Error getting related products:", error);
 

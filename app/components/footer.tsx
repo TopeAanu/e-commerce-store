@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="py-8 border-t bg-background">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 max-w-[1300px]">
         <div className="flex flex-col items-center space-y-4">
           {/* Social Media Icons */}
           <div className="flex items-center space-x-6">

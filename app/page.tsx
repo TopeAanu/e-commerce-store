@@ -6,6 +6,7 @@ import { getFeaturedProducts } from "../app/lib/firebase/products";
 import { categoryService } from "../app/lib/categoryService";
 import HeroSection from "../app/components/hero-section";
 import ShopByCategory from "../components/ShopByCategory";
+import { sanitizeProducts } from "../app/lib/sanitize-products"; // ✅ Import sanitization utility
 
 export default function Home() {
   return (
@@ -58,8 +59,23 @@ export default function Home() {
 }
 
 async function FeaturedProducts() {
-  const products = await getFeaturedProducts();
-  return <ProductGrid products={products} />;
+  try {
+    const products = await getFeaturedProducts();
+
+    // ✅ CRITICAL FIX: Sanitize products before passing to client component
+    const sanitizedProducts = sanitizeProducts(products);
+
+    return <ProductGrid products={sanitizedProducts} />;
+  } catch (error) {
+    console.error("Error fetching featured products:", error);
+    return (
+      <div className="text-center py-6">
+        <p className="text-muted-foreground">
+          Unable to load featured products at the moment.
+        </p>
+      </div>
+    );
+  }
 }
 
 // Loading component from categories page

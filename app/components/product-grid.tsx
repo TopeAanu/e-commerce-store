@@ -1,8 +1,23 @@
+// app/components/product-grid.tsx
 import Link from "next/link";
 import Image from "next/image";
+import ProductCarousel from "./product-carousel";
 import type { Product } from "../../app/lib/types";
 
-export default function ProductGrid({ products }: { products: Product[] }) {
+interface ProductGridProps {
+  products: Product[];
+  layout?: "grid" | "carousel";
+}
+
+export default function ProductGrid({
+  products,
+  layout = "carousel",
+}: ProductGridProps) {
+  if (layout === "carousel") {
+    return <ProductCarousel products={products} />;
+  }
+
+  // Original grid layout (fallback)
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {products.map((product) => (
