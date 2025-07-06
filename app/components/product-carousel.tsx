@@ -66,76 +66,82 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
 
   return (
     <div className="relative">
-      {/* Navigation Buttons */}
-      {totalSlides > 1 && (
-        <>
-          <button
-            onClick={goToPrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white shadow-md rounded-full p-2 transition-all duration-200 hover:scale-110"
-            aria-label="Previous products"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            onClick={goToNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white shadow-md rounded-full p-2 transition-all duration-200 hover:scale-110"
-            aria-label="Next products"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </>
-      )}
+      {/* Carousel Container with Navigation */}
+      <div className="relative">
+        {/* Navigation Buttons - positioned to center with images only */}
+        {totalSlides > 1 && (
+          <>
+            <button
+              onClick={goToPrev}
+              className="absolute left-[-1rem] top-[40%] -translate-y-1/2 z-10 bg-white/80 hover:bg-white shadow-md rounded-full p-2 transition-all duration-200 hover:scale-110"
+              aria-label="Previous products"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={goToNext}
+              className="absolute right-[-1rem] top-[40%] -translate-y-1/2 z-10 bg-white/80 hover:bg-white shadow-md rounded-full p-2 transition-all duration-200 hover:scale-110"
+              aria-label="Next products"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </>
+        )}
 
-      {/* Carousel Container */}
-      <div ref={carouselRef} className="overflow-hidden rounded-lg">
-        <div
-          className="flex transition-transform duration-500 ease-in-out"
-          style={{
-            transform: `translateX(-${currentIndex * 100}%)`,
-          }}
-        >
-          {Array.from({ length: totalSlides }).map((_, slideIndex) => (
-            <div key={slideIndex} className="w-full flex-shrink-0">
-              <div className="grid grid-cols-4 md:grid-cols-6 gap-4 px-2">
-                {products
-                  .slice(
-                    slideIndex * itemsPerView,
-                    (slideIndex + 1) * itemsPerView
-                  )
-                  .map((product) => (
-                    <Link
-                      key={product.id}
-                      href={`/products/${product.id}`}
-                      className="group"
-                    >
-                      <div className="aspect-square relative overflow-hidden rounded-lg bg-muted">
-                        <Image
-                          src={
-                            product.imageUrl ||
-                            "/placeholder.svg?height=400&width=400"
-                          }
-                          alt={product.name}
-                          fill
-                          className="object-cover transition-transform group-hover:scale-105"
-                          sizes="(max-width: 768px) 25vw, 16.66vw"
-                        />
-                      </div>
-                      <div className="mt-2">
-                        <h3 className="font-medium text-sm truncate">
-                          {product.name}
-                        </h3>
-                        <p className="text-xs text-muted-foreground truncate">
-                          {product.category}
-                        </p>
-                        <p className="mt-1 font-medium text-sm">
-                          ${product.price.toFixed(2)}
-                        </p>
-                      </div>
-                    </Link>
-                  ))}
+        {/* Carousel Container */}
+        <div ref={carouselRef} className="overflow-hidden rounded-lg">
+          <div
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{
+              transform: `translateX(-${currentIndex * 100}%)`,
+            }}
+          >
+            {Array.from({ length: totalSlides }).map((_, slideIndex) => (
+              <div key={slideIndex} className="w-full flex-shrink-0">
+                <div className="grid grid-cols-4 md:grid-cols-6 gap-4 px-0">
+                  {products
+                    .slice(
+                      slideIndex * itemsPerView,
+                      (slideIndex + 1) * itemsPerView
+                    )
+                    .map((product) => (
+                      <Link
+                        key={product.id}
+                        href={`/products/${product.id}`}
+                        className="group"
+                      >
+                        <div className="aspect-square relative overflow-hidden rounded-lg bg-muted">
+                          <Image
+                            src={
+                              product.imageUrl ||
+                              "/placeholder.svg?height=400&width=400"
+                            }
+                            alt={product.name}
+                            fill
+                            className="object-cover transition-transform group-hover:scale-105"
+                            sizes="(max-width: 768px) 25vw, 16.66vw"
+                          />
+                          {/* Price overlay */}
+                          <div className="absolute bottom-1 right-1 bg-green-600 text-white px-2 py-1 rounded-md">
+                            <p className="text-xs font-medium">
+                              ${product.price.toFixed(2)}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="mt-2">
+                          <h3 className="font-medium text-sm truncate">
+                            {product.name}
+                          </h3>
+                          {/* <p className="text-xs text-muted-foreground truncate">
+                            {product.category}
+                          </p> */}
+                        </div>
+                      </Link>
+                    ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
