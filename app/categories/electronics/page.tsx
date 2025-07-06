@@ -6,7 +6,7 @@ import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { db } from "../../lib/firebase/config";
 import { AddToCartButton } from "../../components/add-to-cart-button";
 import type { Product } from "../../lib/types";
-import Breadcrumbs from "../../components/breadcrumbs";
+// import Breadcrumbs from "../../components/breadcrumbs";
 
 // Firestore document structure
 interface FirestoreProduct {
@@ -83,39 +83,6 @@ const ElectronicsPage = () => {
     fetchProducts();
   }, []);
 
-  const renderStars = (rating: number) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(
-        <span key={i} className="text-yellow-400">
-          ★
-        </span>
-      );
-    }
-
-    if (hasHalfStar) {
-      stars.push(
-        <span key="half" className="text-yellow-400">
-          ☆
-        </span>
-      );
-    }
-
-    const remainingStars = 5 - Math.ceil(rating);
-    for (let i = 0; i < remainingStars; i++) {
-      stars.push(
-        <span key={`empty-${i}`} className="text-gray-300">
-          ☆
-        </span>
-      );
-    }
-
-    return stars;
-  };
-
   // Loading state
   if (loading) {
     return (
@@ -171,7 +138,7 @@ const ElectronicsPage = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-black py-8">
       <div className="container mx-auto px-4">
-        <Breadcrumbs />
+        {/* <Breadcrumbs /> */}
         {/* Header Section */}
         <div className="text-left mb-2">
           <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
@@ -201,15 +168,6 @@ const ElectronicsPage = () => {
                 <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 truncate">
                   {product.name}
                 </h3>
-
-                {/* <div className="flex items-center mb-2">
-                  <div className="flex mr-2">
-                    {renderStars(product.rating || 0)}
-                  </div>
-                  <span className="text-sm text-gray-500">
-                    ({product.rating || 0})
-                  </span>
-                </div> */}
 
                 <div className="mb-4">
                   <span className="text-lg font-bold text-green-600">

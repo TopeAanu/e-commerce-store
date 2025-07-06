@@ -5,8 +5,12 @@ import ProductGrid from "../app/components/product-grid";
 import { getFeaturedProducts } from "../app/lib/firebase/products";
 import { categoryService } from "../app/lib/categoryService";
 import HeroSection from "../app/components/hero-section";
-import ShopByCategory from "../components/ShopByCategory";
-import { sanitizeProducts } from "../app/lib/sanitize-products"; // ✅ Import sanitization utility
+// import ShopByCategory from "../components/ShopByCategory";
+import { sanitizeProducts } from "../app/lib/sanitize-products";
+import ClothingFashionPage from "./categories/clothing-fashion/page";
+import ElectronicsPage from "./categories/electronics/page";
+import HomeGardenPage from "./categories/home-garden/page";
+import SportsOutdoorsPage from "./categories/sports-outdoors/page";
 
 export default function Home() {
   return (
@@ -27,6 +31,15 @@ export default function Home() {
           >
             <FeaturedProducts />
           </Suspense>
+        </div>
+      </section>
+
+      <section className="container px-4 md:px-6">
+        <div className="flex flex-col gap-4">
+          <ClothingFashionPage />
+          <ElectronicsPage />
+          <HomeGardenPage />
+          <SportsOutdoorsPage />
         </div>
       </section>
 
@@ -111,7 +124,7 @@ const CategoriesPreview = async () => {
     // Show only first 4 categories on homepage
     const previewCategories = categories.slice(0, 4);
 
-    return <ShopByCategory categories={previewCategories} />;
+    // return <ShopByCategory categories={previewCategories} />;
   } catch (error) {
     return (
       <div className="text-center">
