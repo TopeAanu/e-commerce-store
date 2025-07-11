@@ -11,6 +11,11 @@ interface ProductCarouselProps {
   products: Product[];
 }
 
+// Helper function to format price without .00
+function formatPrice(price: number) {
+  return price % 1 === 0 ? price.toFixed(0) : price.toFixed(2);
+}
+
 export default function ProductCarousel({ products }: ProductCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(6);
@@ -124,7 +129,7 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
                           {/* Price overlay */}
                           <div className="absolute bottom-1 right-1 bg-green-600 text-white px-2 py-1 rounded-md">
                             <p className="text-xs font-medium">
-                              ${product.price.toFixed(2)}
+                              ${formatPrice(product.price)}
                             </p>
                           </div>
                         </div>

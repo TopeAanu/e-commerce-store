@@ -52,6 +52,11 @@ function sanitizeRelatedProductItem(item: any) {
   };
 }
 
+// Helper function to format price without .00
+function formatPrice(price: number) {
+  return price % 1 === 0 ? price.toFixed(0) : price.toFixed(2);
+}
+
 async function ProductDetails({ id }: { id: string }) {
   const product = await getProductById(id);
 
@@ -76,7 +81,7 @@ async function ProductDetails({ id }: { id: string }) {
           />
           {/* Price overlay in bottom right */}
           <div className="absolute bottom-3 right-3 bg-green-600 text-white px-3 py-2 rounded text-lg font-semibold">
-            ${product.price.toFixed(2)}
+            ${formatPrice(product.price)}
           </div>
         </div>
 
@@ -97,12 +102,12 @@ async function ProductDetails({ id }: { id: string }) {
       </div>
 
       {/* Related Products Section */}
-      <div className="mt-8">
+      {/* <div className="mt-8">
         <h2 className="text-2xl font-bold mb-4">Related Products</h2>
         <Suspense fallback={<p>Loading related products...</p>}>
           <RelatedProducts productId={id} category={product.category} />
         </Suspense>
-      </div>
+      </div> */}
 
       {/* Related Product Items Section */}
       <div className="mt-8">

@@ -137,7 +137,7 @@ const ClothingFashionPage = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-black py-8">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-0">
         {/* <Breadcrumbs /> */}
         {/* Header Section */}
         <div className="text-left mb-2">
@@ -178,7 +178,7 @@ const ClothingFashionPage = () => {
                 </div>
               </div>
 
-              <div className="p-4">
+              <div className="p-0">
                 <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 truncate">
                   {product.name}
                 </h3>

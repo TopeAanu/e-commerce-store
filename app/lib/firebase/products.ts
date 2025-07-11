@@ -90,7 +90,7 @@ export const getFeaturedProducts = async (): Promise<Product[]> => {
     const q = query(
       collection(db, "products"),
       where("featured", "==", true),
-      limit(8)
+      limit(12)
     );
     const querySnapshot = await getDocs(q);
 
