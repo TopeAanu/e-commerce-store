@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { db } from "../../lib/firebase/config";
-import { AddToCartButton } from "../../components/add-to-cart-button";
+import { AddToCartButton } from "../../components/add-to-cart-icon";
 import type { Product } from "../../lib/types";
 // import Breadcrumbs from "../../components/breadcrumbs";
 
@@ -162,6 +162,18 @@ const ElectronicsPage = () => {
                     Out of Stock
                   </div>
                 )}
+
+                {/* Cart Icon - Left Bottom */}
+                {product.inStock && (
+                  <div className="absolute bottom-2 left-2">
+                    <AddToCartButton product={product} />
+                  </div>
+                )}
+
+                {/* Price - Right Bottom */}
+                <div className="absolute bottom-2 right-2 bg-green-600 text-white px-2 py-1 rounded text-sm font-bold">
+                  ${product.price}
+                </div>
               </div>
 
               <div className="p-4">
@@ -169,30 +181,11 @@ const ElectronicsPage = () => {
                   {product.name}
                 </h3>
 
-                <div className="mb-4">
-                  <span className="text-lg font-bold text-green-600">
-                    ${product.price}
-                  </span>
-                </div>
-
-                {/* Replace the simple button with AddToCartButton component */}
-                {product.inStock ? (
-                  <AddToCartButton product={product} />
-                ) : (
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-center py-2">
-                      <span className="text-gray-500 text-sm">
-                        Out of Stock
-                      </span>
-                    </div>
-                    <button
-                      className="w-full px-4 py-2 bg-gray-300 text-gray-500 cursor-not-allowed rounded-md text-sm font-medium"
-                      disabled
-                    >
-                      Unavailable
-                    </button>
+                {/* {!product.inStock && (
+                  <div className="flex items-center justify-center py-2">
+                    <span className="text-gray-500 text-sm">Out of Stock</span>
                   </div>
-                )}
+                )} */}
               </div>
             </div>
           ))}
