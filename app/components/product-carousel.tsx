@@ -11,23 +11,18 @@ interface ProductCarouselProps {
   products: Product[];
 }
 
-// Helper function to format price without .00
-function formatPrice(price: number) {
-  return price % 1 === 0 ? price.toFixed(0) : price.toFixed(2);
-}
-
 export default function ProductCarousel({ products }: ProductCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [itemsPerView, setItemsPerView] = useState(6);
+  const [itemsPerView, setItemsPerView] = useState(4);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   // Handle responsive items per view
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
-        setItemsPerView(4); // Mobile: 4 items
+        setItemsPerView(2); // Mobile: 2 items
       } else {
-        setItemsPerView(6); // Desktop: 6 items
+        setItemsPerView(4); // Desktop: 4 items
       }
     };
 
@@ -103,7 +98,7 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
           >
             {Array.from({ length: totalSlides }).map((_, slideIndex) => (
               <div key={slideIndex} className="w-full flex-shrink-0">
-                <div className="grid grid-cols-4 md:grid-cols-6 gap-4 px-0">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-0">
                   {products
                     .slice(
                       slideIndex * itemsPerView,
@@ -124,12 +119,12 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
                             alt={product.name}
                             fill
                             className="object-cover transition-transform group-hover:scale-105"
-                            sizes="(max-width: 768px) 25vw, 16.66vw"
+                            sizes="(max-width: 768px) 50vw, 25vw"
                           />
                           {/* Price overlay */}
                           <div className="absolute bottom-1 right-1 bg-green-600 text-white px-2 py-1 rounded-md">
                             <p className="text-xs font-medium">
-                              ${formatPrice(product.price)}
+                              ${product.price.toFixed(2)}
                             </p>
                           </div>
                         </div>

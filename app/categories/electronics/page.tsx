@@ -99,7 +99,7 @@ const ElectronicsPage = () => {
   // Error state
   if (error) {
     return (
-      <div className="min-h-screen bg-white dark:bg-black py-8">
+      <div className="min-h-screen bg-white dark:bg-gray-900 py-8">
         <div className="container mx-auto px-4">
           <div className="flex justify-center items-center h-64">
             <div className="text-center">
@@ -121,7 +121,7 @@ const ElectronicsPage = () => {
   // No products found
   if (products.length === 0) {
     return (
-      <div className="min-h-screen bg-white dark:bg-black py-8">
+      <div className="min-h-screen bg-white dark:bg-gray-900 py-8">
         <div className="container mx-auto px-4">
           <div className="flex justify-center items-center h-64">
             <div className="text-center">
@@ -145,7 +145,9 @@ const ElectronicsPage = () => {
             Electronics
           </h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+        {/* Products Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
           {products.map((product) => (
             <div
               key={product.id}
