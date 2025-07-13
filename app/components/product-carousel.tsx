@@ -73,17 +73,17 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
           <>
             <button
               onClick={goToPrev}
-              className="absolute left-[-1rem] top-[40%] -translate-y-1/2 z-10 bg-white/80 hover:bg-white shadow-md rounded-full p-2 transition-all duration-200 hover:scale-110"
+              className="absolute left-[-1rem] top-[40%] -translate-y-1/2 z-10 bg-white/60 hover:bg-white/80 shadow-md rounded-full p-2 transition-all duration-300 hover:scale-110 opacity-70 hover:opacity-100"
               aria-label="Previous products"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-5 h-5 transition-transform duration-200" />
             </button>
             <button
               onClick={goToNext}
-              className="absolute right-[-1rem] top-[40%] -translate-y-1/2 z-10 bg-white/80 hover:bg-white shadow-md rounded-full p-2 transition-all duration-200 hover:scale-110"
+              className="absolute right-[-1rem] top-[40%] -translate-y-1/2 z-10 bg-white/60 hover:bg-white/80 shadow-md rounded-full p-2 transition-all duration-300 hover:scale-110 opacity-70 hover:opacity-100"
               aria-label="Next products"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-5 h-5 transition-transform duration-200" />
             </button>
           </>
         )}
@@ -91,7 +91,7 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
         {/* Carousel Container */}
         <div ref={carouselRef} className="overflow-hidden rounded-lg">
           <div
-            className="flex transition-transform duration-500 ease-in-out"
+            className="flex transition-transform duration-700 ease-in-out"
             style={{
               transform: `translateX(-${currentIndex * 100}%)`,
             }}
@@ -118,7 +118,7 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
                             }
                             alt={product.name}
                             fill
-                            className="object-cover transition-transform group-hover:scale-105"
+                            className="object-cover transition-transform duration-300 group-hover:scale-105"
                             sizes="(max-width: 768px) 50vw, 25vw"
                           />
                           {/* Price overlay */}
@@ -144,24 +144,6 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
           </div>
         </div>
       </div>
-
-      {/* Pagination Dots */}
-      {totalSlides > 1 && (
-        <div className="flex justify-center mt-4 space-x-2">
-          {Array.from({ length: totalSlides }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                index === currentIndex
-                  ? "bg-primary scale-110"
-                  : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 }

@@ -1,8 +1,28 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "../../components/ui/button";
 import { ShoppingBag } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export default function HeroSection() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Duplicate the same image for carousel
+  const images = [
+    "https://i.ibb.co/hFbmrt3k/shopping-1-removebg-preview.png",
+    "https://i.ibb.co/hFbmrt3k/shopping-1-removebg-preview.png",
+    "https://i.ibb.co/hFbmrt3k/shopping-1-removebg-preview.png",
+  ];
+
+  // Auto-slide functionality with longer interval
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [images.length]);
+
   return (
     <section className="relative w-screen h-[70vh] min-h-[500px] -mx-[50vw] left-1/2 right-1/2">
       <div className="max-w-[1000px] mx-auto h-full px-4 sm:px-6 md:px-8">
@@ -18,24 +38,28 @@ export default function HeroSection() {
                 on all orders.
               </p>
             </div>
-            {/* <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-              <Button asChild size="lg" className="w-full sm:w-auto">
-                <Link href="/">
-                  <ShoppingBag className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                  Shop Now
-                </Link>
-              </Button>
-            </div> */}
           </div>
 
-          {/* Right side - Image */}
+          {/* Right side - Image Carousel */}
           <div className="flex items-center justify-center lg:justify-end order-1 lg:order-2 pb-0 -mb-4">
             <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
-              <img
-                src="https://i.ibb.co/hFbmrt3k/shopping-1-removebg-preview.png"
-                alt="Shopping experience"
-                className="w-full h-auto rounded-lg object-cover"
-              />
+              {/* Carousel Container */}
+              <div className="relative overflow-hidden rounded-lg">
+                <div
+                  className="flex transition-transform duration-700 ease-in-out"
+                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                >
+                  {images.map((image, index) => (
+                    <div key={index} className="w-full flex-shrink-0">
+                      <img
+                        src={image}
+                        alt={`Shopping experience ${index + 1}`}
+                        className="w-full h-auto rounded-lg object-cover transition-opacity duration-300"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
