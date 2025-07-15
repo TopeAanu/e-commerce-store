@@ -1,4 +1,4 @@
-// scripts/uploadSampleData.ts
+// scripts/seedElectronics.ts
 import dotenv from "dotenv";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, setDoc } from "firebase/firestore";

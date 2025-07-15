@@ -2,11 +2,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../lib/firebase/config";
 import { AddToCartButton } from "../../components/add-to-cart-icon";
 import type { Product } from "../../lib/types";
-// import Breadcrumbs from "../../components/breadcrumbs";
+import Link from "next/link";
 
 // Firestore document structure
 interface FirestoreProduct {
@@ -24,6 +24,7 @@ const ElectronicsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
 
   // Convert Firestore product to Product type
   const convertToProduct = (
@@ -33,15 +34,15 @@ const ElectronicsPage = () => {
     return {
       id: firestoreProduct.id?.toString() || docId,
       name: firestoreProduct.name,
-      description: `${firestoreProduct.category} - ${firestoreProduct.subcategory}`, // Create description from category/subcategory
+      description: `${firestoreProduct.category} - ${firestoreProduct.subcategory}`,
       price: firestoreProduct.price,
       category: firestoreProduct.category,
       imageUrl: firestoreProduct.image,
-      inventory: firestoreProduct.inStock ? 100 : 0, // Default inventory
+      inventory: firestoreProduct.inStock ? 100 : 0,
       inStock: firestoreProduct.inStock,
       createdAt: new Date().toISOString(),
       rating: firestoreProduct.rating,
-      reviewCount: Math.floor(Math.random() * 100) + 1, // Mock review count
+      reviewCount: Math.floor(Math.random() * 100) + 1,
     };
   };
 
@@ -50,26 +51,20 @@ const ElectronicsPage = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
+        console.log("Fetching products from Firestore..."); // Debug log
 
-        // Fetch all products from 'electronics' collection
         const productsRef = collection(db, "electronics");
-
-        // Option with query filters (uncomment if needed)
-        // const productsRef = query(
-        //   collection(db, "electronics"),
-        //   where("category", "in", ["smartphones", "laptops", "accessories"]),
-        //   orderBy("name")
-        // );
-
         const querySnapshot = await getDocs(productsRef);
         const fetchedProducts: Product[] = [];
 
         querySnapshot.forEach((doc) => {
+          console.log("Document ID:", doc.id, "Data:", doc.data()); // Debug log
           const data = doc.data() as FirestoreProduct;
           const product = convertToProduct(data, doc.id);
           fetchedProducts.push(product);
         });
 
+        console.log("Fetched products:", fetchedProducts); // Debug log
         setProducts(fetchedProducts);
         setError(null);
       } catch (err) {
@@ -82,6 +77,18 @@ const ElectronicsPage = () => {
 
     fetchProducts();
   }, []);
+
+  // Handle image error - prevents infinite loop
+  const handleImageError = (
+    productId: string,
+    e: React.SyntheticEvent<HTMLImageElement>
+  ) => {
+    if (!failedImages.has(productId)) {
+      setFailedImages((prev) => new Set(prev).add(productId));
+      // Optionally log the error (comment out to remove console messages)
+      // console.error("Image failed to load for product:", productId);
+    }
+  };
 
   // Loading state
   if (loading) {
@@ -138,7 +145,6 @@ const ElectronicsPage = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-black py-8">
       <div className="container mx-auto px-0">
-        {/* <Breadcrumbs /> */}
         {/* Header Section */}
         <div className="text-left mb-2">
           <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
@@ -154,11 +160,24 @@ const ElectronicsPage = () => {
               className="bg-white dark:bg-black rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
             >
               <div className="relative">
-                <img
-                  src={product.imageUrl || "/placeholder-image.jpg"}
-                  alt={product.name}
-                  className="w-full h-48 object-cover"
-                />
+                <Link href={`/electronics-details/${product.id}`}>
+                  {failedImages.has(product.id) ? (
+                    // Fallback when image fails - no more attempts to load images
+                    <div className="w-full h-48 bg-gray-200 dark:bg-gray-700 flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity">
+                      <div className="text-center">
+                        <div className="text-4xl text-gray-400 mb-2">📦</div>
+                        <p className="text-gray-500 text-sm">No Image</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      className="w-full h-48 object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                      onError={(e) => handleImageError(product.id, e)}
+                    />
+                  )}
+                </Link>
                 {!product.inStock && (
                   <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-xs">
                     Out of Stock
@@ -178,16 +197,12 @@ const ElectronicsPage = () => {
                 </div>
               </div>
 
-              <div className="p-0">
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 truncate">
-                  {product.name}
-                </h3>
-
-                {/* {!product.inStock && (
-                  <div className="flex items-center justify-center py-2">
-                    <span className="text-gray-500 text-sm">Out of Stock</span>
-                  </div>
-                )} */}
+              <div className="p-4">
+                <Link href={`/electronics-details/${product.id}`}>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 truncate cursor-pointer hover:text-green-600 transition-colors">
+                    {product.name}
+                  </h3>
+                </Link>
               </div>
             </div>
           ))}
