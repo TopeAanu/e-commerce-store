@@ -1,4 +1,4 @@
-// app/categories/electronics-fashion/page.tsx
+// app/categories/electronics/page.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";

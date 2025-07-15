@@ -7,6 +7,7 @@ import { db } from "../../lib/firebase/config";
 import { AddToCartButton } from "../../components/add-to-cart-icon";
 import type { Product } from "../../lib/types";
 import Breadcrumbs from "../../components/breadcrumbs";
+import { useRouter } from "next/navigation";
 
 // Firestore document structure
 interface FirestoreProduct {
@@ -24,6 +25,7 @@ const ClothingFashionPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   // Convert Firestore product to Product type
   const convertToProduct = (
@@ -43,6 +45,12 @@ const ClothingFashionPage = () => {
       rating: firestoreProduct.rating,
       reviewCount: Math.floor(Math.random() * 100) + 1, // Mock review count
     };
+  };
+
+  // Handle image click to navigate to product detail page
+  const handleImageClick = (productId: string) => {
+    // Navigate to product detail page
+    router.push(`/product-details/${productId}`);
   };
 
   // Fetch products from Firestore
@@ -157,7 +165,8 @@ const ClothingFashionPage = () => {
                 <img
                   src={product.imageUrl || "/placeholder-image.jpg"}
                   alt={product.name}
-                  className="w-full h-48 object-cover"
+                  className="w-full h-48 object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                  onClick={() => handleImageClick(product.id)}
                 />
                 {!product.inStock && (
                   <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-xs">
