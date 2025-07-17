@@ -7,6 +7,7 @@ import { db } from "../../lib/firebase/config";
 import { AddToCartButton } from "../../components/add-to-cart-icon";
 import type { Product } from "../../lib/types";
 import Breadcrumbs from "../../components/breadcrumbs";
+import { useRouter } from "next/navigation";
 
 // Firestore document structure
 interface FirestoreProduct {
@@ -24,6 +25,7 @@ const HomeGardenPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   // Convert Firestore product to Product type
   const convertToProduct = (
@@ -82,6 +84,11 @@ const HomeGardenPage = () => {
 
     fetchProducts();
   }, []);
+
+  // Handle product click navigation
+  const handleProductClick = (productId: string) => {
+    router.push(`/product-details-home/${productId}`);
+  };
 
   // Loading state
   if (loading) {
@@ -152,10 +159,12 @@ const HomeGardenPage = () => {
               className="bg-white dark:bg-black rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
             >
               <div className="relative">
+                {/* Make image clickable */}
                 <img
                   src={product.imageUrl || "/placeholder-image.jpg"}
                   alt={product.name}
-                  className="w-full h-48 object-cover"
+                  className="w-full h-48 object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                  onClick={() => handleProductClick(product.id)}
                 />
                 {!product.inStock && (
                   <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-xs">
@@ -165,7 +174,7 @@ const HomeGardenPage = () => {
 
                 {/* Cart Icon - Left Bottom */}
                 {product.inStock && (
-                  <div className="absolute bottom-2 left-2">
+                  <div className="absolute bottom-2 left-2 z-10">
                     <AddToCartButton product={product} />
                   </div>
                 )}
@@ -176,16 +185,14 @@ const HomeGardenPage = () => {
                 </div>
               </div>
 
-              <div className="p-0">
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 truncate">
+              <div className="p-2">
+                {/* Make product name clickable */}
+                <h3
+                  className="font-semibold text-gray-800 dark:text-gray-200 mb-2 truncate cursor-pointer hover:text-green-600 transition-colors"
+                  onClick={() => handleProductClick(product.id)}
+                >
                   {product.name}
                 </h3>
-
-                {/* {!product.inStock && (
-                  <div className="flex items-center justify-center py-2">
-                    <span className="text-gray-500 text-sm">Out of Stock</span>
-                  </div>
-                )} */}
               </div>
             </div>
           ))}

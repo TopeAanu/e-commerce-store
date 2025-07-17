@@ -1,4 +1,4 @@
-// app/categories/sports/page.tsx
+// app/categories/sport-outdoors/page.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -7,6 +7,7 @@ import { db } from "../../lib/firebase/config";
 import { AddToCartButton } from "../../components/add-to-cart-icon";
 import type { Product } from "../../lib/types";
 import Breadcrumbs from "../../components/breadcrumbs";
+import { useRouter } from "next/navigation";
 
 // Firestore document structure
 interface FirestoreProduct {
@@ -24,6 +25,7 @@ const SportsOutdoorsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   // Convert Firestore product to Product type
   const convertToProduct = (
@@ -43,6 +45,11 @@ const SportsOutdoorsPage = () => {
       rating: firestoreProduct.rating,
       reviewCount: Math.floor(Math.random() * 100) + 1, // Mock review count
     };
+  };
+
+  // Handle product click navigation
+  const handleProductClick = (productId: string) => {
+    router.push(`/product-details-sports/${productId}`);
   };
 
   // Fetch products from Firestore
@@ -149,7 +156,8 @@ const SportsOutdoorsPage = () => {
           {products.map((product) => (
             <div
               key={product.id}
-              className="bg-white dark:bg-black rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
+              className="bg-white dark:bg-black rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
+              onClick={() => handleProductClick(product.id)}
             >
               <div className="relative">
                 <img
@@ -165,7 +173,10 @@ const SportsOutdoorsPage = () => {
 
                 {/* Cart icon at left bottom */}
                 {product.inStock && (
-                  <div className="absolute bottom-2 left-2">
+                  <div
+                    className="absolute bottom-2 left-2"
+                    onClick={(e) => e.stopPropagation()} // Prevent navigation when clicking cart button
+                  >
                     <AddToCartButton product={product} />
                   </div>
                 )}
