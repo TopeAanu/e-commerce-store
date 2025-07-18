@@ -14,12 +14,17 @@ interface ProductCarouselProps {
 export default function ProductCarousel({ products }: ProductCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(4);
+  const [isMobile, setIsMobile] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const startX = useRef(0);
+  const isDragging = useRef(false);
 
   // Handle responsive items per view
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (mobile) {
         setItemsPerView(2); // Mobile: 2 items
       } else {
         setItemsPerView(4); // Desktop: 4 items
@@ -31,30 +36,59 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Calculate total slides
-  const totalSlides = Math.ceil(products.length / itemsPerView);
+  // Calculate max index (how far we can scroll)
+  const maxIndex = Math.max(0, products.length - itemsPerView);
 
-  // Handle navigation
+  // Handle navigation - continue from beginning when reaching end
   const goToNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % totalSlides);
+    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
   };
 
   const goToPrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
+    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
   };
 
-  // Auto-scroll functionality (optional)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      goToNext();
-    }, 5000); // Change slide every 5 seconds
+  // Handle touch events for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!isMobile) return;
+    startX.current = e.touches[0].clientX;
+    isDragging.current = true;
+  };
 
-    return () => clearInterval(interval);
-  }, [currentIndex, totalSlides]);
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isMobile || !isDragging.current) return;
+    e.preventDefault();
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!isMobile || !isDragging.current) return;
+
+    const endX = e.changedTouches[0].clientX;
+    const diffX = startX.current - endX;
+    const threshold = 50; // Minimum swipe distance
+
+    if (Math.abs(diffX) > threshold) {
+      if (diffX > 0) {
+        // Swipe left - go to next
+        goToNext();
+      } else {
+        // Swipe right - go to previous
+        goToPrev();
+      }
+    }
+
+    isDragging.current = false;
+  };
 
   // Get current visible products
-  const startIndex = currentIndex * itemsPerView;
-  const visibleProducts = products.slice(startIndex, startIndex + itemsPerView);
+  const visibleProducts = products.slice(
+    currentIndex,
+    currentIndex + itemsPerView
+  );
+
+  // Calculate total slides for mobile dots
+  const totalSlides = Math.ceil(products.length / itemsPerView);
+  const currentSlide = Math.floor(currentIndex / itemsPerView);
 
   if (products.length === 0) {
     return (
@@ -68,8 +102,8 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
     <div className="relative">
       {/* Carousel Container with Navigation */}
       <div className="relative">
-        {/* Navigation Buttons - positioned to center with images only */}
-        {totalSlides > 1 && (
+        {/* Desktop Navigation Buttons */}
+        {!isMobile && (
           <>
             <button
               onClick={goToPrev}
@@ -89,16 +123,22 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
         )}
 
         {/* Carousel Container */}
-        <div ref={carouselRef} className="overflow-hidden rounded-lg">
+        <div
+          ref={carouselRef}
+          className="overflow-hidden rounded-lg"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           <div
             className="flex transition-transform duration-700 ease-in-out"
             style={{
-              transform: `translateX(-${currentIndex * 100}%)`,
+              transform: `translateX(-${(currentIndex / itemsPerView) * 100}%)`,
             }}
           >
             {Array.from({ length: totalSlides }).map((_, slideIndex) => (
               <div key={slideIndex} className="w-full flex-shrink-0">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-0">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 px-2 md:px-0">
                   {products
                     .slice(
                       slideIndex * itemsPerView,
@@ -132,9 +172,6 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
                           <h3 className="font-medium text-sm truncate">
                             {product.name}
                           </h3>
-                          {/* <p className="text-xs text-muted-foreground truncate">
-                            {product.category}
-                          </p> */}
                         </div>
                       </Link>
                     ))}
@@ -144,6 +181,24 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
           </div>
         </div>
       </div>
+
+      {/* Mobile Dots Navigation */}
+      {isMobile && products.length > itemsPerView && (
+        <div className="flex justify-center mt-4 space-x-1">
+          {Array.from({ length: totalSlides }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index * itemsPerView)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                Math.floor(currentIndex / itemsPerView) === index
+                  ? "bg-green-600 w-4"
+                  : "bg-gray-300"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

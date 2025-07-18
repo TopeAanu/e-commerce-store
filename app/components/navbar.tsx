@@ -68,7 +68,7 @@ export default function Navbar() {
 
   const navItems = [
     { name: "Home", href: "/" },
-    { name: "Products", href: "/products" },
+    // { name: "Products", href: "/products" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
@@ -78,7 +78,7 @@ export default function Navbar() {
       <header className="sticky top-0 z-40 w-full border-b bg-background">
         <div className="container flex h-16 items-center px-4 max-w-[1300px] mx-auto">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="font-serif italic font-medium text-green-600 text-xl">
+            <span className="font-serif italic font-medium text-green-600 text-xl md:text-2xl">
               MelStore
             </span>
           </Link>

@@ -21,7 +21,7 @@ export default function Home() {
       {/* Featured Products */}
       <section className="container px-4 md:px-6">
         <div className="flex flex-col gap-4">
-          <h2 className="text-2xl font-bold tracking-tight">
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
             Featured Products
           </h2>
           <Suspense
