@@ -28,15 +28,15 @@ export default function HeroSection() {
       <div className="max-w-[1010px] mx-auto h-full px-4 sm:px-6 md:px-8">
         <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-center h-full py-8">
           {/* Left side - Text content */}
-          <div className="flex flex-col justify-center space-y-4 sm:space-y-6 text-center lg:text-left order-2 lg:order-1 -mt-4 sm:-mt-6">
+          <div className="flex flex-col justify-center space-y-4 sm:space-y-6 text-center lg:text-left order-2 lg:order-1 pt-4 sm:pt-6">
             <div className="space-y-3 sm:space-y-4">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tighter bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent leading-tight">
                 MelStore👋
               </h1>
               <p className="max-w-[600px] mx-auto lg:mx-0 text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
                 Discover our curated collection of premium products, selected to
-                enhance your lifestyle, with free shipping
-                included on all orders, no minimum purchase required.
+                enhance your lifestyle, with free shipping included on all
+                orders, no minimum purchase required.
               </p>
             </div>
           </div>

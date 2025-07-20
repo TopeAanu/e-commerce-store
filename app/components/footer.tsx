@@ -5,8 +5,8 @@ export default function Footer() {
   return (
     <footer className="py-8 border-t bg-background">
       <div className="container mx-auto px-4 max-w-[1300px]">
-        <div className="flex flex-col items-center space-y-4">
-          {/* Social Media Icons */}
+        {/* Centered Social Icons */}
+        <div className="flex justify-center mb-4">
           <div className="flex items-center space-x-6">
             <Link
               href="https://instagram.com"
@@ -17,7 +17,6 @@ export default function Footer() {
             >
               <Instagram className="h-5 w-5" />
             </Link>
-
             <Link
               href="https://facebook.com"
               target="_blank"
@@ -27,7 +26,6 @@ export default function Footer() {
             >
               <Facebook className="h-5 w-5" />
             </Link>
-
             <Link
               href="https://linkedin.com"
               target="_blank"
@@ -37,7 +35,6 @@ export default function Footer() {
             >
               <Linkedin className="h-5 w-5" />
             </Link>
-
             <Link
               href="https://x.com"
               target="_blank"
@@ -55,17 +52,15 @@ export default function Footer() {
               </svg>
             </Link>
           </div>
+        </div>
 
-          {/* Divider */}
-          <div className="w-full max-w-xs border-t border-muted"></div>
+        {/* Divider */}
+        <div className="w-full max-w-xs mx-auto border-t border-muted mb-4"></div>
 
-          {/* Copyright */}
-          <div className="text-center text-sm text-muted-foreground">
-            © {new Date().getFullYear()} MelStore. All rights reserved.
-          </div>
-
-          {/* Optional: Additional Links */}
-          <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+        {/* Bottom Row: Left and Right aligned */}
+        <div className="flex justify-between items-center text-sm text-muted-foreground flex-wrap gap-y-2">
+          {/* Left: Policy Links */}
+          <div className="flex items-center space-x-4 text-xs">
             <Link
               href="/privacy"
               className="hover:text-foreground transition-colors"
@@ -86,6 +81,11 @@ export default function Footer() {
             >
               Contact
             </Link>
+          </div>
+
+          {/* Right: Copyright */}
+          <div className="text-xs">
+            © {new Date().getFullYear()} MelStore. All rights reserved.
           </div>
         </div>
       </div>
