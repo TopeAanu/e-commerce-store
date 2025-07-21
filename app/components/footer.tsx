@@ -3,16 +3,16 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="py-8 border-t bg-background">
+    <footer className="py-8 border-t bg-background overflow-x-hidden">
       <div className="container mx-auto px-4 max-w-[1300px]">
-        {/* Centered Social Icons */}
+        {/* Social Media Icons */}
         <div className="flex justify-center mb-4">
           <div className="flex items-center space-x-6">
             <Link
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+              className="text-green-600 hover:text-green-700 transition-colors duration-200"
               aria-label="Follow us on Instagram"
             >
               <Instagram className="h-5 w-5" />
@@ -21,7 +21,7 @@ export default function Footer() {
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+              className="text-green-600 hover:text-green-700 transition-colors duration-200"
               aria-label="Follow us on Facebook"
             >
               <Facebook className="h-5 w-5" />
@@ -30,7 +30,7 @@ export default function Footer() {
               href="https://linkedin.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+              className="text-green-600 hover:text-green-700 transition-colors duration-200"
               aria-label="Follow us on LinkedIn"
             >
               <Linkedin className="h-5 w-5" />
@@ -39,7 +39,7 @@ export default function Footer() {
               href="https://x.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+              className="text-green-600 hover:text-green-700 transition-colors duration-200"
               aria-label="Follow us on X (Twitter)"
             >
               <svg
@@ -55,35 +55,35 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="w-full max-w-xs mx-auto border-t border-muted mb-4"></div>
+        <div className="w-full max-w-xs mx-auto border-t border-green-600 mb-4" />
 
-        {/* Bottom Row: Left and Right aligned */}
-        <div className="flex justify-between items-center text-sm text-muted-foreground flex-wrap gap-y-2">
-          {/* Left: Policy Links */}
-          <div className="flex items-center space-x-4 text-xs">
+        {/* Responsive Bottom Row */}
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center text-sm text-green-600 gap-y-2 text-center md:text-left">
+          {/* Left Links */}
+          <div className="flex flex-wrap justify-center md:justify-start items-center space-x-4 text-xs">
             <Link
               href="/privacy"
-              className="hover:text-foreground transition-colors"
+              className="hover:text-green-700 transition-colors"
             >
               Privacy Policy
             </Link>
             <span>•</span>
             <Link
               href="/terms"
-              className="hover:text-foreground transition-colors"
+              className="hover:text-green-700 transition-colors"
             >
               Terms of Service
             </Link>
             <span>•</span>
             <Link
               href="/contact"
-              className="hover:text-foreground transition-colors"
+              className="hover:text-green-700 transition-colors"
             >
               Contact
             </Link>
           </div>
 
-          {/* Right: Copyright */}
+          {/* Right Copyright */}
           <div className="text-xs">
             © {new Date().getFullYear()} MelStore. All rights reserved.
           </div>

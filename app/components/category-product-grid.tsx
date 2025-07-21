@@ -107,8 +107,7 @@ const CategoryProductGrid: React.FC<CategoryProductGridProps> = ({
             </h2>
           </div>
         )}
-
-        <div className={`grid ${gridColsClass} gap-3`}>
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
           {products.map((product) => (
             <div
               key={product.id}
@@ -138,7 +137,7 @@ const CategoryProductGrid: React.FC<CategoryProductGridProps> = ({
               <div className="p-0">
                 <h3
                   className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate cursor-pointer"
-                  onClick={() => handleImageClick(product.id)} // ✅ Clickable name too
+                  onClick={() => handleImageClick(product.id)}
                 >
                   {product.name}
                 </h3>

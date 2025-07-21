@@ -8,11 +8,10 @@ import { useState, useEffect } from "react";
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Duplicate the same image for carousel
   const images = [
     "https://i.ibb.co/hFbmrt3k/shopping-1-removebg-preview.png",
-    "https://i.ibb.co/hFbmrt3k/shopping-1-removebg-preview.png",
-    "https://i.ibb.co/hFbmrt3k/shopping-1-removebg-preview.png",
+    "https://i.ibb.co/rKksPHbr/ecommerce2-removebg-preview.png",
+    // "https://i.ibb.co/hFbmrt3k/shopping-1-removebg-preview.png",
   ];
 
   // Auto-slide functionality with longer interval
@@ -24,7 +23,7 @@ export default function HeroSection() {
   }, [images.length]);
 
   return (
-    <section className="relative w-screen h-[70vh] min-h-[500px] -mx-[50vw] left-1/2 right-1/2">
+    <section className="relative w-full h-[70vh] min-h-[500px]">
       <div className="max-w-[1010px] mx-auto h-full px-4 sm:px-6 md:px-8">
         <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-center h-full py-8">
           {/* Left side - Text content */}

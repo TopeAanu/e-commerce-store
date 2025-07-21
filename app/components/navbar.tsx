@@ -105,7 +105,7 @@ export default function Navbar() {
               <Input
                 type="search"
                 placeholder="Search products..."
-                className="w-[200px] pl-8"
+                className="w-[200px] pl-8 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
