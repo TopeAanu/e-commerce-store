@@ -12,9 +12,9 @@ import Footer from "./components/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "NextShop - Ecommerce Store",
+  title: "MelSore - Ecommerce Store",
   description:
-    "A modern ecommerce store built with Next.js, Firebase, and Netlify",
+    "Discover the best deals on electronics, fashion, home goods, and more at MelSore. Shop now for quality products at unbeatable prices.",
 };
 
 export default function RootLayout({

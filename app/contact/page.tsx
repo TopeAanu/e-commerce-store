@@ -54,7 +54,7 @@ export default function ContactPage() {
   return (
     <div className="container px-4 py-8 md:py-12">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8 text-center">Contact Us</h1>
+        <h1 className="text-3xl font-bold mb-8">Contact Us</h1>
 
         <div className="grid md:grid-cols-2 gap-8">
           <div>
@@ -68,7 +68,7 @@ export default function ContactPage() {
                   <div>
                     <p className="font-medium">Email</p>
                     <p className="text-muted-foreground">
-                      support@nextshop.com
+                      support@melstore.com
                     </p>
                   </div>
                 </div>
@@ -86,9 +86,9 @@ export default function ContactPage() {
                   <div>
                     <p className="font-medium">Address</p>
                     <p className="text-muted-foreground">
-                      123 Commerce Street
+                      123 MelStore Street
                       <br />
-                      New York, NY 10001
+                      MelStore Domain, MS 10001
                     </p>
                   </div>
                 </div>

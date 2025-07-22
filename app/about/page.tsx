@@ -2,11 +2,11 @@ export default function AboutPage() {
   return (
     <div className="container px-4 py-8 md:py-12">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">About NextShop</h1>
+        <h1 className="text-3xl font-bold mb-8">About MelStore</h1>
 
         <div className="prose max-w-none">
           <p className="text-lg text-muted-foreground mb-6">
-            Welcome to NextShop, your premier destination for quality products at affordable prices.
+            Welcome to MelSore, your premier destination for quality products at affordable prices.
           </p>
 
           <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
@@ -15,7 +15,7 @@ export default function AboutPage() {
             home goods, beauty products to clothing, we curate only the finest items for our collection.
           </p>
 
-          <h2 className="text-2xl font-semibold mb-4">Why Choose NextShop?</h2>
+          <h2 className="text-2xl font-semibold mb-4">Why Choose MelSore?</h2>
           <ul className="list-disc pl-6 mb-6">
             <li>Carefully curated product selection</li>
             <li>Competitive prices and regular sales</li>
