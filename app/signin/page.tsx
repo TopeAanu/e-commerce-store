@@ -1,7 +1,5 @@
 "use client";
 
-import type React from "react";
-
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "../../components/ui/button";
@@ -12,10 +10,15 @@ import {
   signInWithEmailAndPassword,
   signInWithGoogle,
 } from "../../app/lib/firebase/auth";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [formError, setFormError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -23,17 +26,37 @@ export default function SignInPage() {
 
   const redirect = searchParams.get("redirect") || "/";
 
+  const validateEmail = (value: string) => {
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    setEmailError(isValid ? "" : "Please enter a valid email address");
+  };
+
+  const validatePassword = (value: string) => {
+    setPasswordError(
+      value.length >= 6 ? "" : "Password must be at least 6 characters"
+    );
+  };
+
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    validateEmail(email);
+    validatePassword(password);
+
+    if (emailError || passwordError) return;
+
     setIsLoading(true);
+    setFormError("");
 
     try {
       await signInWithEmailAndPassword(email, password);
       router.push(redirect);
-    } catch (error: any) {
+    } catch {
+      const errorMessage = "Invalid email or password. Please try again.";
+      setFormError(errorMessage);
       toast({
         title: "Sign in failed",
-        description: error.message || "Failed to sign in. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -43,15 +66,17 @@ export default function SignInPage() {
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
+    setFormError("");
 
     try {
       await signInWithGoogle();
       router.push(redirect);
-    } catch (error: any) {
+    } catch {
+      const errorMessage = "Failed to sign in with Google. Please try again.";
+      setFormError(errorMessage);
       toast({
         title: "Sign in failed",
-        description:
-          error.message || "Failed to sign in with Google. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -68,6 +93,12 @@ export default function SignInPage() {
             Sign in to your account to continue
           </p>
         </div>
+
+        {formError && (
+          <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md">
+            <p className="text-sm font-medium">{formError}</p>
+          </div>
+        )}
 
         <div className="space-y-4">
           <Button
@@ -116,9 +147,18 @@ export default function SignInPage() {
                 type="email"
                 placeholder="name@example.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  validateEmail(e.target.value);
+                }}
+                className={
+                  emailError ? "border-red-500 focus:ring-red-500" : ""
+                }
                 required
               />
+              {emailError && (
+                <p className="text-sm text-red-600">{emailError}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -128,13 +168,37 @@ export default function SignInPage() {
                   <a href="/forgot-password">Forgot password?</a>
                 </Button>
               </div>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    validatePassword(e.target.value);
+                  }}
+                  className={
+                    passwordError
+                      ? "border-red-500 focus:ring-red-500 pr-10"
+                      : "pr-10"
+                  }
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
+              {passwordError && (
+                <p className="text-sm text-red-600">{passwordError}</p>
+              )}
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
@@ -144,7 +208,7 @@ export default function SignInPage() {
         </div>
 
         <div className="text-center text-sm">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Button variant="link" className="p-0 h-auto" asChild>
             <a href="/signup">Sign up</a>
           </Button>
