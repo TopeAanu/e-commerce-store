@@ -6,11 +6,13 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../lib/firebase/config";
 import type { Product } from "../../lib/types";
 import CategoryProductGrid from "../../components/category-product-grid";
+import { useRouter } from "next/navigation";
 
 const HomeGardenPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -57,6 +59,7 @@ const HomeGardenPage = () => {
       title="Home & Garden"
       showBreadcrumbs={true}
       onRetry={() => window.location.reload()}
+      onProductClick={(id) => router.push(`/home-garden/${id}`)}
     />
   );
 };

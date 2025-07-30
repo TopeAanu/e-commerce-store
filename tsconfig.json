@@ -34,7 +34,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "scripts/seedClothing.js"  ],
+, "scripts/seedClothing.mjs"  ],
   "exclude": [
     "node_modules"
   ]

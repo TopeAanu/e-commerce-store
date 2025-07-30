@@ -47,17 +47,17 @@ const db = getFirestore(app);
 
 const sampleProducts = [
   // Fitness & Training
-  {
-    id: 1,
-    name: "Adjustable Dumbbell Set",
-    price: 299.99,
-    image:
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=300&fit=crop",
-    category: "fitness",
-    subcategory: "weights",
-    rating: 4.8,
-    inStock: true,
-  },
+  // {
+  //   id: 1,
+  //   name: "Adjustable Dumbbell Set",
+  //   price: 299.99,
+  //   image:
+  //     "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=300&fit=crop",
+  //   category: "fitness",
+  //   subcategory: "weights",
+  //   rating: 4.8,
+  //   inStock: true,
+  // },
   {
     id: 2,
     name: "Yoga Mat Premium",
@@ -73,8 +73,7 @@ const sampleProducts = [
     id: 3,
     name: "Resistance Band Set",
     price: 24.99,
-    image:
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=300&fit=crop",
+    image: "https://i.ibb.co/nqP8kXyB/woman-working-out-alone.jpg",
     category: "fitness",
     subcategory: "resistance",
     rating: 4.4,
@@ -115,28 +114,28 @@ const sampleProducts = [
     rating: 4.6,
     inStock: true,
   },
-  {
-    id: 7,
-    name: "Sleeping Bag All Season",
-    price: 79.99,
-    image:
-      "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=300&h=300&fit=crop",
-    category: "outdoor",
-    subcategory: "sleeping",
-    rating: 4.3,
-    inStock: true,
-  },
-  {
-    id: 8,
-    name: "Portable Camp Stove",
-    price: 89.99,
-    image:
-      "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=300&h=300&fit=crop",
-    category: "outdoor",
-    subcategory: "cooking",
-    rating: 4.4,
-    inStock: true,
-  },
+  // {
+  //   id: 7,
+  //   name: "Sleeping Bag All Season",
+  //   price: 79.99,
+  //   image:
+  //     "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=300&h=300&fit=crop",
+  //   category: "outdoor",
+  //   subcategory: "sleeping",
+  //   rating: 4.3,
+  //   inStock: true,
+  // },
+  // {
+  //   id: 8,
+  //   name: "Portable Camp Stove",
+  //   price: 89.99,
+  //   image:
+  //     "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=300&h=300&fit=crop",
+  //   category: "outdoor",
+  //   subcategory: "cooking",
+  //   rating: 4.4,
+  //   inStock: true,
+  // },
 
   // Water Sports
   {
@@ -166,23 +165,23 @@ const sampleProducts = [
     name: "Snorkeling Set",
     price: 69.99,
     image:
-      "https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=300&h=300&fit=crop",
+      "https://i.ibb.co/23pXJC0s/scuba-respiratory-safety-closeup-summertime-1.jpg",
     category: "water",
     subcategory: "diving",
     rating: 4.3,
     inStock: true,
   },
-  {
-    id: 12,
-    name: "Inflatable Kayak",
-    price: 249.99,
-    image:
-      "https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=300&h=300&fit=crop",
-    category: "water",
-    subcategory: "kayaking",
-    rating: 4.2,
-    inStock: false,
-  },
+  // {
+  //   id: 12,
+  //   name: "Inflatable Kayak",
+  //   price: 249.99,
+  //   image:
+  //     "https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=300&h=300&fit=crop",
+  //   category: "water",
+  //   subcategory: "kayaking",
+  //   rating: 4.2,
+  //   inStock: false,
+  // },
 
   // Additional Sports Items
   {
@@ -222,8 +221,7 @@ const sampleProducts = [
     id: 16,
     name: "Protein Shaker Bottle",
     price: 14.99,
-    image:
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=300&fit=crop",
+    image: "https://i.ibb.co/VYbLxNMf/shaker-bottle-1.jpg",
     category: "fitness",
     subcategory: "accessories",
     rating: 4.2,

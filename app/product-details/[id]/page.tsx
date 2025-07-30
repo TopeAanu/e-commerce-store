@@ -1,4 +1,4 @@
-// app/product-details/[id]/page.tsx
+// app/product-details-clothings/[id]/page.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";

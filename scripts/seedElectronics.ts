@@ -85,19 +85,19 @@ const sampleProducts = [
     rating: 4.7,
     inStock: true,
   },
-  {
-    id: 4,
-    name: "Wireless Power Bank",
-    price: 49.99,
-    description:
-      "10,000mAh portable charging solution with wireless charging pad and USB-C fast charging. Keep your devices powered on-the-go with both wired and wireless charging options.",
-    image:
-      "https://images.unsplash.com/photo-1609592094469-0f9a3d0b3e3e?w=300&h=300&fit=crop",
-    category: "mobile",
-    subcategory: "accessories",
-    rating: 4.3,
-    inStock: false,
-  },
+  // {
+  //   id: 4,
+  //   name: "Wireless Power Bank",
+  //   price: 49.99,
+  //   description:
+  //     "10,000mAh portable charging solution with wireless charging pad and USB-C fast charging. Keep your devices powered on-the-go with both wired and wireless charging options.",
+  //   image:
+  //     "https://images.unsplash.com/photo-1609592094469-0f9a3d0b3e3e?w=300&h=300&fit=crop",
+  //   category: "mobile",
+  //   subcategory: "accessories",
+  //   rating: 4.3,
+  //   inStock: false,
+  // },
 
   // Computers & Laptops
   {
@@ -139,19 +139,19 @@ const sampleProducts = [
     rating: 4.7,
     inStock: true,
   },
-  {
-    id: 8,
-    name: "4K Monitor 27",
-    price: 399.99,
-    description:
-      "27-inch 4K UHD monitor with IPS panel, HDR10 support, and USB-C connectivity. Perfect for professional work, gaming, and entertainment with stunning color accuracy.",
-    image:
-      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=300&h=300&fit=crop",
-    category: "computers",
-    subcategory: "monitors",
-    rating: 4.4,
-    inStock: true,
-  },
+  // {
+  //   id: 8,
+  //   name: "4K Monitor 27",
+  //   price: 399.99,
+  //   description:
+  //     "27-inch 4K UHD monitor with IPS panel, HDR10 support, and USB-C connectivity. Perfect for professional work, gaming, and entertainment with stunning color accuracy.",
+  //   image:
+  //     "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=300&h=300&fit=crop",
+  //   category: "computers",
+  //   subcategory: "monitors",
+  //   rating: 4.4,
+  //   inStock: true,
+  // },
 
   // Gaming & Entertainment
   {
@@ -186,8 +186,7 @@ const sampleProducts = [
     price: 129.99,
     description:
       "Premium gaming headset with 7.1 surround sound, noise-canceling microphone, and comfortable over-ear design. Compatible with PC, console, and mobile gaming.",
-    image:
-      "https://images.unsplash.com/photo-1583481411411-ca4b9b1c4d7e?w=300&h=300&fit=crop",
+    image: "https://i.ibb.co/qM9mzsbf/gaming-headset-1.jpg",
     category: "gaming",
     subcategory: "headsets",
     rating: 4.5,

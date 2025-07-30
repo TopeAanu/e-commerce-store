@@ -1,4 +1,4 @@
-// scripts/uploadSampleData.ts
+// scripts/seedClothing.js
 import dotenv from "dotenv";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, setDoc } from "firebase/firestore";
@@ -66,8 +66,7 @@ const sampleProducts = [
     description:
       "Timeless white button-down blouse made from premium cotton. Versatile piece that pairs well with skirts, pants, or jeans for both professional and casual looks.",
     price: 45.99,
-    image:
-      "https://images.unsplash.com/photo-1564257577817-4e3c8e0f3b8b?w=300&h=300&fit=crop",
+    image: "https://i.ibb.co/vx5n9bKy/white-blouse-1.jpg",
     category: "women",
     subcategory: "tops",
     rating: 4.8,
@@ -132,8 +131,7 @@ const sampleProducts = [
     description:
       "Sophisticated two-piece suit in navy blue wool blend. Features a modern tailored fit with notch lapels, two-button closure, and matching trousers with flat front.",
     price: 299.99,
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop",
+    image: "https://i.ibb.co/QjQGMkKL/clothing-tshirt-boy-sleeve-fashion-1.jpg",
     category: "men",
     subcategory: "formal",
     rating: 4.9,
@@ -198,8 +196,7 @@ const sampleProducts = [
     description:
       "Classic leather belt with polished metal buckle. Made from genuine leather with a smooth finish, perfect for both casual and formal wear. Available in multiple sizes.",
     price: 39.99,
-    image:
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=300&fit=crop",
+    image: "https://i.ibb.co/q3PfdGSY/leather-belt-1.jpg",
     category: "accessories",
     subcategory: "belts",
     rating: 4.3,

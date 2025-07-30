@@ -65,8 +65,7 @@ const sampleProducts = [
     price: 129.99,
     description:
       "Elegant ceramic table lamp with a soft linen shade that provides warm, ambient lighting. Perfect for bedrooms, living rooms, or office spaces. Features a convenient touch control and energy-efficient LED bulb included.",
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop",
+    image: "https://i.ibb.co/NgPkb6x5/interior-lamp-1.jpg",
     category: "decor",
     subcategory: "lighting",
     rating: 4.7,
@@ -78,8 +77,7 @@ const sampleProducts = [
     price: 34.99,
     description:
       "Indulge in comfort with this premium velvet throw pillow. Soft to the touch with a rich texture that adds sophistication to any sofa or bed. Includes hidden zipper closure and removable cover for easy cleaning.",
-    image:
-      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=300&h=300&fit=crop",
+    image: "https://i.ibb.co/tMhT5y5Z/pillow.jpg",
     category: "decor",
     subcategory: "pillows",
     rating: 4.4,
@@ -154,19 +152,19 @@ const sampleProducts = [
   },
 
   // Garden & Outdoor
-  {
-    id: 9,
-    name: "Garden Tool Set",
-    price: 69.99,
-    description:
-      "Complete 10-piece garden tool set including trowel, pruning shears, weeder, and more. Made with durable stainless steel heads and comfortable ergonomic handles. Comes with convenient storage case.",
-    image:
-      "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&h=300&fit=crop",
-    category: "garden",
-    subcategory: "tools",
-    rating: 4.6,
-    inStock: true,
-  },
+  // {
+  //   id: 9,
+  //   name: "Garden Tool Set",
+  //   price: 69.99,
+  //   description:
+  //     "Complete 10-piece garden tool set including trowel, pruning shears, weeder, and more. Made with durable stainless steel heads and comfortable ergonomic handles. Comes with convenient storage case.",
+  //   image:
+  //     "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&h=300&fit=crop",
+  //   category: "garden",
+  //   subcategory: "tools",
+  //   rating: 4.6,
+  //   inStock: true,
+  // },
   {
     id: 10,
     name: "Outdoor Patio Set",
@@ -221,40 +219,39 @@ const sampleProducts = [
     rating: 4.7,
     inStock: true,
   },
-  {
-    id: 14,
-    name: "Kitchen Bar Stools",
-    price: 159.99,
-    description:
-      "Set of 2 modern bar stools with adjustable height and swivel function. Features comfortable padded seats and sturdy metal base with footrest. Perfect for kitchen islands and breakfast bars.",
-    image:
-      "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=300&h=300&fit=crop",
-    category: "furniture",
-    subcategory: "stools",
-    rating: 4.4,
-    inStock: true,
-  },
-  {
-    id: 15,
-    name: "Watering Can Set",
-    price: 29.99,
-    description:
-      "Set of 3 decorative watering cans in different sizes. Made from galvanized steel with vintage-inspired design. Features comfortable handle and removable spout for precise watering control.",
-    image:
-      "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&h=300&fit=crop",
-    category: "garden",
-    subcategory: "irrigation",
-    rating: 4.1,
-    inStock: true,
-  },
+  // {
+  //   id: 14,
+  //   name: "Kitchen Bar Stools",
+  //   price: 159.99,
+  //   description:
+  //     "Set of 2 modern bar stools with adjustable height and swivel function. Features comfortable padded seats and sturdy metal base with footrest. Perfect for kitchen islands and breakfast bars.",
+  //   image:
+  //     "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=300&h=300&fit=crop",
+  //   category: "furniture",
+  //   subcategory: "stools",
+  //   rating: 4.4,
+  //   inStock: true,
+  // },
+  // {
+  //   id: 15,
+  //   name: "Watering Can Set",
+  //   price: 29.99,
+  //   description:
+  //     "Set of 3 decorative watering cans in different sizes. Made from galvanized steel with vintage-inspired design. Features comfortable handle and removable spout for precise watering control.",
+  //   image:
+  //     "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&h=300&fit=crop",
+  //   category: "garden",
+  //   subcategory: "irrigation",
+  //   rating: 4.1,
+  //   inStock: true,
+  // },
   {
     id: 16,
     name: "Decorative Mirror",
     price: 89.99,
     description:
       "Round decorative mirror with ornate metal frame featuring sunburst design. Creates the illusion of more space while adding glamour to any room. Easy to hang with included mounting hardware.",
-    image:
-      "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=300&h=300&fit=crop",
+    image: "https://i.ibb.co/gbzjccLr/miror2-1.jpg",
     category: "decor",
     subcategory: "mirrors",
     rating: 4.6,
