@@ -1,6 +1,5 @@
 // app/categories/home-garden/page.tsx
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../lib/firebase/config";
@@ -59,7 +58,7 @@ const HomeGardenPage = () => {
       title="Home & Garden"
       showBreadcrumbs={true}
       onRetry={() => window.location.reload()}
-      onProductClick={(id) => router.push(`/home-garden/${id}`)}
+      onProductClick={(id) => router.push(`/product-details-home/${id}`)}
     />
   );
 };

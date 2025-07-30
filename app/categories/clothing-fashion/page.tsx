@@ -6,6 +6,7 @@ import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { db } from "../../lib/firebase/config";
 import type { Product } from "../../lib/types";
 import CategoryProductGrid from "../../components/category-product-grid";
+import { useRouter } from "next/navigation";
 
 // Firestore document structure
 interface FirestoreProduct {
@@ -23,6 +24,7 @@ const ClothingFashionPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   // Convert Firestore product to Product type
   const convertToProduct = (
@@ -85,6 +87,7 @@ const ClothingFashionPage = () => {
       onRetry={handleRetry}
       gridCols={{ default: 2, sm: 4, lg: 6 }}
       showBreadcrumbs={false}
+      onProductClick={(id) => router.push(`/product-details-clothing/${id}`)}
     />
   );
 };

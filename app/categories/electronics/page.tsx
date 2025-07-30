@@ -1,16 +1,17 @@
 // app/categories/electronics/page.tsx
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../lib/firebase/config";
 import type { Product } from "../../lib/types";
 import CategoryProductGrid from "../../components/category-product-grid";
+import { useRouter } from "next/navigation";
 
 const ElectronicsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -19,7 +20,6 @@ const ElectronicsPage = () => {
         const productsRef = collection(db, "electronics");
         const querySnapshot = await getDocs(productsRef);
         const fetchedProducts: Product[] = [];
-
         querySnapshot.forEach((doc) => {
           const data = doc.data() as any;
           fetchedProducts.push({
@@ -36,7 +36,6 @@ const ElectronicsPage = () => {
             reviewCount: Math.floor(Math.random() * 100) + 1,
           });
         });
-
         setProducts(fetchedProducts);
         setError(null);
       } catch (err) {
@@ -45,7 +44,6 @@ const ElectronicsPage = () => {
         setLoading(false);
       }
     };
-
     fetchProducts();
   }, []);
 
@@ -57,6 +55,7 @@ const ElectronicsPage = () => {
       title="Electronics"
       showBreadcrumbs={true}
       onRetry={() => window.location.reload()}
+      onProductClick={(id) => router.push(`/product-details-electronics/${id}`)}
     />
   );
 };
