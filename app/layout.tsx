@@ -1,6 +1,7 @@
 import type React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 import { ThemeProvider } from "../components/theme-provider";
 import Navbar from "../app/components/navbar";
@@ -38,6 +39,33 @@ export const metadata: Metadata = {
     ],
   },
 };
+
+// Progressive loading skeleton
+function ProgressiveLoader() {
+  return (
+    <div className="animate-pulse space-y-4 p-4">
+      <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+      <div className="space-y-2">
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4/6"></div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className="h-48 bg-gray-200 dark:bg-gray-700 rounded-lg"
+          ></div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Error boundary for lazy loading
+function LazyErrorBoundary({ children }: { children: React.ReactNode }) {
+  return <Suspense fallback={<ProgressiveLoader />}>{children}</Suspense>;
+}
 
 export default function RootLayout({
   children,
@@ -78,9 +106,18 @@ export default function RootLayout({
             <CartProvider>
               <Navbar />
               <div className="min-h-screen flex flex-col max-w-[1000px] mx-auto">
-                <main className="flex-1">{children}</main>
+                <main className="flex-1">
+                  <LazyErrorBoundary>{children}</LazyErrorBoundary>
+                </main>
               </div>
-              <Footer />
+              {/* Footer can also be lazy loaded if it's heavy */}
+              <Suspense
+                fallback={
+                  <div className="h-32 bg-gray-100 dark:bg-gray-800"></div>
+                }
+              >
+                <Footer />
+              </Suspense>
               <Toaster />
             </CartProvider>
           </AuthProvider>
