@@ -74,7 +74,7 @@ const ProductDetailsPage = ({ params }: ProductDetailsPageProps) => {
       price: firestoreProduct.price,
       category: firestoreProduct.category,
       imageUrl: firestoreProduct.image,
-      inventory: firestoreProduct.inStock ? 100 : 0,
+      inventory: firestoreProduct.inStock ? 1 : 0,
       inStock: firestoreProduct.inStock,
       createdAt:
         firestoreProduct.createdAt?.toDate?.()?.toISOString() ||
